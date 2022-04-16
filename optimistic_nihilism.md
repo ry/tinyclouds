@@ -5,11 +5,10 @@ cover_html: <svg class="w-full" height="350" width="100%" background="black"><ci
 background: black
 ---
 
-
-This post is in response to the [Optimistic
-Nihilism](https://www.youtube.com/watch?v=MBRqu0YOH14) video by Kurzgesagt.
-Optimistic Nihilism perfectly describes my perspective on life and the
-universe. I want to add my interpretation of the philosophy and spice it up
+This post is in response to the
+[Optimistic Nihilism](https://www.youtube.com/watch?v=MBRqu0YOH14) video by
+Kurzgesagt. Optimistic Nihilism perfectly describes my perspective on life and
+the universe. I want to add my interpretation of the philosophy and spice it up
 with some science fiction ideas.
 
 ## Nihilism
@@ -17,8 +16,8 @@ with some science fiction ideas.
 It's clear that in our modern era, with our extremely robust theories of
 physics, backed by [extremely](https://en.wikipedia.org/wiki/LIGO)
 [precise](https://en.wikipedia.org/wiki/Large_Hadron_Collider)
-[observations](https://en.wikipedia.org/wiki/Cosmic_microwave_background) of
-the universe, that the religious explanations of existence are
+[observations](https://en.wikipedia.org/wiki/Cosmic_microwave_background) of the
+universe, that the religious explanations of existence are
 [false](https://en.wikipedia.org/wiki/The_God_Delusion). Our best understanding
 is that we are matter, not unlike like the mountains and oceans and stars, that
 over long periods of time, through intricate chemistry, became alive and then

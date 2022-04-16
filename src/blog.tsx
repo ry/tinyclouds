@@ -27,17 +27,16 @@ export default async function blog(url) {
       const contents = await Deno.readTextFile(entry.path);
       const post = frontMatter(contents);
       post.pathname = pathname;
-      posts[pathname] = post
+      posts[pathname] = post;
       postsUnordered.push(post);
     }
   }
 
-	postIndex = postsUnordered.sort((a, b) => {
-		const aDate = new Date(a.attributes.publish_date);
-		const bDate = new Date(b.attributes.publish_date);
-		return bDate.getTime() - aDate.getTime();
-	});
-
+  postIndex = postsUnordered.sort((a, b) => {
+    const aDate = new Date(a.attributes.publish_date);
+    const bDate = new Date(b.attributes.publish_date);
+    return bDate.getTime() - aDate.getTime();
+  });
 
   console.log("http://localhost:8000/");
   serve(handler);
@@ -51,10 +50,10 @@ async function handler(req) {
         "content-type": "text/css",
       },
     });
-  } 
+  }
 
   if (pathname == "/") {
-    return ssr(() => <Index/>);
+    return ssr(() => <Index />);
   }
 
   console.log(pathname);
@@ -76,9 +75,7 @@ const Index = (props) => {
       </Helmet>
       <h1 class="text-5xl font-bold">Blog</h1>
       <div class="mt-8">
-        {
-          postIndex.map((post) => <PostCard post={post}/>)
-        }
+        {postIndex.map((post) => <PostCard post={post} />)}
       </div>
     </div>
   );
@@ -115,7 +112,7 @@ function Post(props) {
     <div class="min-h-screen">
       <Helmet>
         {post.attributes.background && (
-					<body style={`background: ${post.attributes.background}`} />
+          <body style={`background: ${post.attributes.background}`} />
         )}
         <title>{post.title}</title>
         <link rel="stylesheet" href="/static/gfm.css" />
@@ -155,7 +152,7 @@ function Post(props) {
       </article>
     </div>
   );
-};
+}
 
 const formatter = new Intl.DateTimeFormat("en-US", {
   year: "numeric",
