@@ -7,7 +7,7 @@ import { h, Helmet, ssr } from "https://crux.land/nanossr@0.0.4";
 import { serveDir } from "https://deno.land/std@0.134.0/http/file_server.ts";
 import { walk } from "https://deno.land/std@0.134.0/fs/walk.ts";
 import { dirname, relative } from "https://deno.land/std@0.134.0/path/mod.ts";
-import { fromFileUrl } from "https://deno.land/std@0.134.0/path/mod.ts";
+import { fromFileUrl, join } from "https://deno.land/std@0.134.0/path/mod.ts";
 import { serve } from "https://deno.land/std@0.134.0/http/mod.ts";
 import * as gfm from "https://deno.land/x/gfm@0.1.20/mod.ts";
 import { parse as frontMatter } from "https://deno.land/x/frontmatter@v0.1.4/mod.ts";
@@ -15,6 +15,16 @@ import { Feed } from "https://esm.sh/feed@4.2.2?pin=v57";
 import type { Item as FeedItem } from "https://esm.sh/feed@4.2.2?pin=v57";
 
 const posts = new Map<string, Post>();
+let headerContent: undefined | string = undefined;
+let blogSettings: BlogSettings = {
+  title: "Blog",
+  subtitle: undefined,
+};
+
+export interface BlogSettings {
+  title?: string;
+  subtitle?: string;
+}
 
 /** Represents a Post in the Blog. */
 export interface Post {
@@ -38,23 +48,31 @@ export interface Post {
  * blog(import.meta.url);
  * ```
  */
-export default async function blog(url: string) {
+export default async function blog(url: string, settings?: BlogSettings) {
   const dirUrl = dirname(url);
   const path = fromFileUrl(dirUrl);
   const cwd = Deno.cwd();
 
+  if (settings) {
+    blogSettings = {
+      ...blogSettings,
+      ...settings,
+    };
+  }
   // Read posts from the current directory and store them in memory.
   // TODO(@satyarohith): not efficient for large number of posts.
   for await (
     const entry of walk(path, {
-      // Exclude README.md/readme.md
-      skip: [new RegExp("readme.md", "i")],
+      // Exclude README.md/readme.md and header.md
+      skip: [new RegExp("readme.md", "i"), new RegExp("header.md")],
     })
   ) {
     if (entry.isFile && entry.path.endsWith(".md")) {
       await loadPost(entry.path);
     }
   }
+
+  await loadHeader(join(path, "./header.md"));
 
   console.log("http://localhost:8000/");
   serve(handler);
@@ -99,6 +117,21 @@ async function loadPost(path: string) {
   console.log("Load: ", post.pathname);
 }
 
+async function loadHeader(path: string) {
+  let contents;
+  try {
+    contents = await Deno.readTextFile(path);
+  } catch (_) {
+    return;
+  }
+
+  const { content } = frontMatter(contents) as {
+    content: string;
+  };
+
+  headerContent = content;
+}
+
 function handler(req: Request) {
   const { pathname } = new URL(req.url);
   if (pathname == "/static/gfm.css") {
@@ -133,10 +166,14 @@ const Index = () => {
   return (
     <div class="max-w-screen-md px-4 pt-16 mx-auto">
       <Helmet>
-        <title>Blog</title>
+        <title>{blogSettings.title}</title>
         <link rel="stylesheet" href="/static/gfm.css" />
       </Helmet>
-      <h1 class="text-5xl font-bold">Blog</h1>
+      <h1 class="text-5xl font-bold">{blogSettings.title}</h1>
+      {blogSettings.subtitle
+        ? <h2 class="text-3xl">{blogSettings.subtitle}</h2>
+        : null}
+      {headerContent ? <div class="prose">{headerContent}</div> : null}
       <div class="mt-8">
         {postIndex.map((post) => <PostCard post={post} />)}
       </div>
