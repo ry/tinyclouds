@@ -11,6 +11,8 @@ import { fromFileUrl } from "https://deno.land/std@0.134.0/path/mod.ts";
 import { serve } from "https://deno.land/std@0.134.0/http/mod.ts";
 import * as gfm from "https://deno.land/x/gfm@0.1.20/mod.ts";
 import { parse as frontMatter } from "https://deno.land/x/frontmatter@v0.1.4/mod.ts";
+import { Feed } from "https://esm.sh/feed@4.2.2?pin=v57";
+import type { Item as FeedItem } from "https://esm.sh/feed@4.2.2?pin=v57";
 
 let postIndex: Post[] = [];
 const posts = new Map<string, Post>();
@@ -19,12 +21,15 @@ const posts = new Map<string, Post>();
 export interface Post {
   title: string;
   pathname: string;
+  author: string;
   publishDate: Date;
   snippet: string;
   /** Raw markdown content. */
   markdown: string;
   coverHtml: string;
   background: string;
+  /** An image URL which is used in the OpenGraph og:image tag. */
+  ogImage: string;
 }
 
 /** The main function of the library.
@@ -59,6 +64,7 @@ export default async function blog(url: string) {
 
       const post: Post = {
         title: data.title,
+        author: data.author,
         // Note: users can override path of a blog post using
         // pathname in front matter.
         pathname: data.pathname ?? pathname,
@@ -67,6 +73,7 @@ export default async function blog(url: string) {
         markdown: content,
         coverHtml: data.cover_html,
         background: data.background,
+        ogImage: data["og:image"],
       };
       posts.set(pathname, post);
       postIndex.push(post);
@@ -90,6 +97,9 @@ async function handler(req: Request) {
   }
   if (pathname == "/") {
     return ssr(() => <Index />);
+  }
+  if (pathname == "/feed") {
+    return serveRSS(req);
   }
 
   const post = posts.get(pathname);
@@ -194,4 +204,48 @@ function PrettyDate({ date }: { date: Date }) {
       {formatter.format(date)}
     </time>
   );
+}
+
+/** Serves the rss/atom feed of the blog. */
+async function serveRSS(req: Request) {
+  const url = new URL(req.url);
+  const origin = url.origin;
+  const copyright = `Copyright ${new Date().getFullYear()} ${origin}`;
+  const feed = new Feed({
+    title: "Deno",
+    description: "The latest news from Deno Land Inc.",
+    id: `${origin}/blog`,
+    link: `${origin}/blog`,
+    language: "en",
+    favicon: `${origin}/favicon.ico`,
+    copyright: copyright,
+    generator: "Feed (https://github.com/jpmonette/feed) for Deno",
+    feedLinks: {
+      atom: `${origin}/feed`,
+    },
+  });
+
+  for (const post of postIndex) {
+    const item: FeedItem = {
+      id: `${origin}/blog/${post.title}`,
+      title: post.title,
+      description: post.snippet,
+      date: post.publishDate,
+      link: `${origin}/blog/${post.pathname}`,
+      author: post.author?.split(",").map((author: string) => ({
+        name: author.trim(),
+      })),
+      image: post.ogImage,
+      copyright,
+      published: post.publishDate,
+    };
+    feed.addItem(item);
+  }
+
+  const atomFeed = feed.atom1();
+  return new Response(atomFeed, {
+    headers: {
+      "content-type": "application/atom+xml; charset=utf-8",
+    },
+  });
 }
