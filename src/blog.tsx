@@ -14,7 +14,6 @@ import { parse as frontMatter } from "https://deno.land/x/frontmatter@v0.1.4/mod
 import { Feed } from "https://esm.sh/feed@4.2.2?pin=v57";
 import type { Item as FeedItem } from "https://esm.sh/feed@4.2.2?pin=v57";
 
-let postIndex: Post[] = [];
 const posts = new Map<string, Post>();
 
 /** Represents a Post in the Blog. */
@@ -53,37 +52,51 @@ export default async function blog(url: string) {
     })
   ) {
     if (entry.isFile && entry.path.endsWith(".md")) {
-      let pathname = "/" + relative(cwd, entry.path);
-      // Remove .md extension.
-      pathname = pathname.slice(0, -3);
-      const contents = await Deno.readTextFile(entry.path);
-      const { content, data } = frontMatter(contents) as {
-        data: Record<string, string>;
-        content: string;
-      };
-
-      const post: Post = {
-        title: data.title,
-        author: data.author,
-        // Note: users can override path of a blog post using
-        // pathname in front matter.
-        pathname: data.pathname ?? pathname,
-        publishDate: new Date(data.publish_date),
-        snippet: data.snippet ?? "",
-        markdown: content,
-        coverHtml: data.cover_html,
-        background: data.background,
-        ogImage: data["og:image"],
-      };
-      posts.set(pathname, post);
-      postIndex.push(post);
+      await loadPost(entry.path);
     }
   }
 
-  postIndex.sort((a, b) => b.publishDate.getTime() - a.publishDate.getTime());
-
   console.log("http://localhost:8000/");
   serve(handler);
+
+  // Watcher watches for .md file changes and updates the posts.
+  const watcher = Deno.watchFs(cwd);
+  for await (const event of watcher) {
+    if (event.kind === "modify" || event.kind === "create") {
+      for (const path of event.paths) {
+        if (path.endsWith(".md")) {
+          await loadPost(path);
+        }
+      }
+    }
+  }
+}
+
+async function loadPost(path: string) {
+  const contents = await Deno.readTextFile(path);
+  let pathname = "/" + relative(Deno.cwd(), path);
+  // Remove .md extension.
+  pathname = pathname.slice(0, -3);
+  const { content, data } = frontMatter(contents) as {
+    data: Record<string, string>;
+    content: string;
+  };
+
+  const post: Post = {
+    title: data.title,
+    author: data.author,
+    // Note: users can override path of a blog post using
+    // pathname in front matter.
+    pathname: data.pathname ?? pathname,
+    publishDate: new Date(data.publish_date),
+    snippet: data.snippet ?? "",
+    markdown: content,
+    coverHtml: data.cover_html,
+    background: data.background,
+    ogImage: data["og:image"],
+  };
+  posts.set(pathname, post);
+  console.log("Load: ", post.pathname);
 }
 
 async function handler(req: Request) {
@@ -111,6 +124,12 @@ async function handler(req: Request) {
 }
 
 const Index = () => {
+  const postIndex = [];
+  for (const [_key, post] of posts.entries()) {
+    postIndex.push(post);
+  }
+  postIndex.sort((a, b) => b.publishDate.getTime() - a.publishDate.getTime());
+
   return (
     <div class="max-w-screen-md px-4 pt-16 mx-auto">
       <Helmet>
@@ -225,7 +244,7 @@ async function serveRSS(req: Request) {
     },
   });
 
-  for (const post of postIndex) {
+  for (const [_key, post] of posts.entries()) {
     const item: FeedItem = {
       id: `${origin}/blog/${post.title}`,
       title: post.title,
