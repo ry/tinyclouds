@@ -48,12 +48,15 @@ export default async function blog(url: string) {
     })
   ) {
     if (entry.isFile && entry.path.endsWith(".md")) {
-      const pathname = "/" + relative(cwd, entry.path);
+      let pathname = "/" + relative(cwd, entry.path);
+      // Remove .md extension.
+      pathname = pathname.slice(0, -3);
       const contents = await Deno.readTextFile(entry.path);
       const { content, data } = frontMatter(contents) as {
         data: Record<string, string>;
         content: string;
       };
+
       const post: Post = {
         title: data.title,
         // Note: users can override path of a blog post using
