@@ -99,7 +99,7 @@ async function loadPost(path: string) {
   console.log("Load: ", post.pathname);
 }
 
-async function handler(req: Request) {
+function handler(req: Request) {
   const { pathname } = new URL(req.url);
   if (pathname == "/static/gfm.css") {
     return new Response(gfm.CSS, {
@@ -226,7 +226,7 @@ function PrettyDate({ date }: { date: Date }) {
 }
 
 /** Serves the rss/atom feed of the blog. */
-async function serveRSS(req: Request) {
+function serveRSS(req: Request) {
   const url = new URL(req.url);
   const origin = url.origin;
   const copyright = `Copyright ${new Date().getFullYear()} ${origin}`;
