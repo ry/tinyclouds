@@ -4,46 +4,80 @@
 /// <reference lib="dom.asynciterable" />
 /// <reference lib="deno.ns" />
 import { h, Helmet, ssr } from "https://crux.land/nanossr@0.0.4";
-import { serveDir } from "https://deno.land/std/http/file_server.ts";
-import { walk } from "https://deno.land/std/fs/walk.ts";
-import { dirname, relative } from "https://deno.land/std/path/mod.ts";
-import { fromFileUrl } from "https://deno.land/std/path/mod.ts";
-import { serve } from "https://deno.land/std/http/mod.ts";
-import * as gfm from "https://deno.land/x/gfm/mod.ts";
-import { default as frontMatter } from "https://esm.sh/front-matter@4.0.2?pin=v57";
+import { serveDir } from "https://deno.land/std@0.134.0/http/file_server.ts";
+import { walk } from "https://deno.land/std@0.134.0/fs/walk.ts";
+import { dirname, relative } from "https://deno.land/std@0.134.0/path/mod.ts";
+import { fromFileUrl } from "https://deno.land/std@0.134.0/path/mod.ts";
+import { serve } from "https://deno.land/std@0.134.0/http/mod.ts";
+import * as gfm from "https://deno.land/x/gfm@0.1.20/mod.ts";
+import { parse as frontMatter } from "https://deno.land/x/frontmatter@v0.1.4/mod.ts";
 
-let postIndex = [];
-const posts = new Map<string, unknown>();
+let postIndex: Post[] = [];
+const posts = new Map<string, Post>();
 
-export default async function blog(url) {
+/** Represents a Post in the Blog. */
+export interface Post {
+  title: string;
+  pathname: string;
+  publishDate: Date;
+  snippet: string;
+  /** Raw markdown content. */
+  markdown: string;
+  coverHtml: string;
+  background: string;
+}
+
+/** The main function of the library.
+ *
+ * ```js
+ * import blog from "https://deno.land/x/blog/blog.tsx";
+ * blog(import.meta.url);
+ * ```
+ */
+export default async function blog(url: string) {
   const dirUrl = dirname(url);
   const path = fromFileUrl(dirUrl);
   const cwd = Deno.cwd();
-  const postsUnordered = [];
-  for await (const entry of walk(path)) {
+
+  // Read posts from the current directory and store them in memory.
+  // TODO(@satyarohith): not efficient for large number of posts.
+  for await (
+    const entry of walk(path, {
+      // Exclude README.md/readme.md
+      skip: [new RegExp("readme.md", "i")],
+    })
+  ) {
     if (entry.isFile && entry.path.endsWith(".md")) {
-      // console.log(entry);
       const pathname = "/" + relative(cwd, entry.path);
       const contents = await Deno.readTextFile(entry.path);
-      const post = frontMatter(contents);
-      post.pathname = pathname;
-      posts[pathname] = post;
-      postsUnordered.push(post);
+      const { content, data } = frontMatter(contents) as {
+        data: Record<string, string>;
+        content: string;
+      };
+      const post: Post = {
+        title: data.title,
+        // Note: users can override path of a blog post using
+        // pathname in front matter.
+        pathname: data.pathname ?? pathname,
+        publishDate: new Date(data.publish_date),
+        snippet: data.snippet ?? "",
+        markdown: content,
+        coverHtml: data.cover_html,
+        background: data.background,
+      };
+      posts.set(pathname, post);
+      postIndex.push(post);
     }
   }
 
-  postIndex = postsUnordered.sort((a, b) => {
-    const aDate = new Date(a.attributes.publish_date);
-    const bDate = new Date(b.attributes.publish_date);
-    return bDate.getTime() - aDate.getTime();
-  });
+  postIndex.sort((a, b) => b.publishDate.getTime() - a.publishDate.getTime());
 
   console.log("http://localhost:8000/");
   serve(handler);
 }
 
-async function handler(req) {
-  let { pathname } = new URL(req.url);
+async function handler(req: Request) {
+  const { pathname } = new URL(req.url);
   if (pathname == "/static/gfm.css") {
     return new Response(gfm.CSS, {
       headers: {
@@ -51,22 +85,19 @@ async function handler(req) {
       },
     });
   }
-
   if (pathname == "/") {
     return ssr(() => <Index />);
   }
 
-  console.log(pathname);
-
-  let post = posts[pathname];
+  const post = posts.get(pathname);
   if (!post) {
     return serveDir(req);
   }
 
-  return ssr(() => <Post name="World" post={post} />);
+  return ssr(() => <Post post={post} />);
 }
 
-const Index = (props) => {
+const Index = () => {
   return (
     <div class="max-w-screen-md px-4 pt-16 mx-auto">
       <Helmet>
@@ -81,54 +112,48 @@ const Index = (props) => {
   );
 };
 
-function PostCard(props: { post: Post }) {
-  const post = props.post;
+function PostCard({ post }: { post: Post }) {
   return (
     <div class="py-8 border(t gray-200) grid sm:grid-cols-3 gap-2">
       <div class="w-56 text-gray-500">
         <p>
-          <PrettyDate date={post.attributes.publish_date} />
+          <PrettyDate date={post.publishDate} />
         </p>
       </div>
       <a class="sm:col-span-2" href={post.pathname}>
         <h3 class="text(2xl gray-900) font-bold">
-          {post.attributes.title}
+          {post.title}
         </h3>
         <div class="mt-4 text-gray-900">
-          {post.attributes.snippet}
+          {post.snippet}
         </div>
       </a>
     </div>
   );
 }
 
-function Post(props) {
-  const { post } = props;
-  const html = gfm.render(post.body);
-
-  console.log("background", post.attributes.background);
+function Post({ post }: { post: Post }) {
+  const html = gfm.render(post.markdown);
 
   return (
     <div class="min-h-screen">
       <Helmet>
-        {post.attributes.background && (
-          <body style={`background: ${post.attributes.background}`} />
-        )}
+        {post.background && <body style={`background: ${post.background}`} />}
         <title>{post.title}</title>
         <link rel="stylesheet" href="/static/gfm.css" />
         {post.snippet && <meta name="description" content={post.snippet} />}
-        <meta property="og:title" content={post.attributes.title} />
+        <meta property="og:title" content={post.title} />
       </Helmet>
-      {post.attributes.cover_html && (
-        <div dangerouslySetInnerHTML={{ __html: post.attributes.cover_html }} />
+      {post.coverHtml && (
+        <div dangerouslySetInnerHTML={{ __html: post.coverHtml }} />
       )}
       <article class="max-w-screen-md px-4 pt-8 md:pt-16 mx-auto">
         <h1 class="text-5xl text-gray-900 font-bold">
-          {post.attributes.title}
+          {post.title}
         </h1>
         <div class="mt-8 text-gray-500">
           <p class="flex gap-2 items-center">
-            <PrettyDate date={post.attributes.publish_date} />
+            <PrettyDate date={post.publishDate} />
             <a href="/feed" class="hover:text-gray-700" title="Atom Feed">
               <svg
                 class="w-4 h-4"
@@ -154,16 +179,13 @@ function Post(props) {
   );
 }
 
-const formatter = new Intl.DateTimeFormat("en-US", {
-  year: "numeric",
-  month: "long",
-  day: "numeric",
-});
+function PrettyDate({ date }: { date: Date }) {
+  const formatter = new Intl.DateTimeFormat("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
 
-function PrettyDate(props: { date: string | Date }) {
-  console.log(props.date);
-  const date = new Date(props.date);
-  console.log(date);
   return (
     <time dateTime={date.toISOString()}>
       {formatter.format(date)}

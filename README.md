@@ -16,5 +16,5 @@ blog posts.
 To get started:
 
 ```
-deno run -A --no-check --watch main.js
+deno run -A --no-check=remote --watch main.js
 ```
