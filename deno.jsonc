@@ -1,0 +1,7 @@
+// This entire file is basically boilerplate.
+// it's 3 times longer than the main.js boilerplate.
+{
+  "tasks": {
+    "dev": "deno run -A --no-check=remote --watch main.js"
+  }
+}
