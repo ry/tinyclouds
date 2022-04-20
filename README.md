@@ -18,3 +18,9 @@ To get started:
 ```
 deno run -A --no-check=remote --watch main.js
 ```
+
+or to get HMR use:
+
+```
+deno run -A --no-check=remote --watch main.js --dev
+```

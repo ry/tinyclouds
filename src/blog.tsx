@@ -20,10 +20,9 @@ const HMR_CLIENT_PATH = join(
 );
 const IS_DEV = Deno.args.includes("--dev");
 const HMR_SOCKETS: Set<WebSocket> = new Set();
-
-const posts = new Map<string, Post>();
-let headerContent: undefined | string = undefined;
-let blogSettings: BlogSettings = {
+const POSTS = new Map<string, Post>();
+let HEADER_CONTENT: undefined | string = undefined;
+let BLOG_SETTINGS: BlogSettings = {
   title: "Blog",
   subtitle: undefined,
 };
@@ -61,8 +60,8 @@ export default async function blog(url: string, settings?: BlogSettings) {
   const cwd = Deno.cwd();
 
   if (settings) {
-    blogSettings = {
-      ...blogSettings,
+    BLOG_SETTINGS = {
+      ...BLOG_SETTINGS,
       ...settings,
     };
   }
@@ -123,7 +122,7 @@ async function loadPost(path: string) {
     background: data.background,
     ogImage: data["og:image"],
   };
-  posts.set(pathname, post);
+  POSTS.set(pathname, post);
   console.log("Load: ", post.pathname);
 }
 
@@ -139,7 +138,7 @@ async function loadHeader(path: string) {
     content: string;
   };
 
-  headerContent = content;
+  HEADER_CONTENT = content;
 }
 
 async function handler(req: Request) {
@@ -172,7 +171,7 @@ async function handler(req: Request) {
     return serveRSS(req);
   }
 
-  const post = posts.get(pathname);
+  const post = POSTS.get(pathname);
   if (!post) {
     return serveDir(req);
   }
@@ -196,7 +195,7 @@ function hmrMiddleware(req: Request): Response | null {
 
 const Index = () => {
   const postIndex = [];
-  for (const [_key, post] of posts.entries()) {
+  for (const [_key, post] of POSTS.entries()) {
     postIndex.push(post);
   }
   postIndex.sort((a, b) => b.publishDate.getTime() - a.publishDate.getTime());
@@ -204,15 +203,15 @@ const Index = () => {
   return (
     <div class="max-w-screen-md px-4 pt-16 mx-auto">
       <Helmet>
-        <title>{blogSettings.title}</title>
+        <title>{BLOG_SETTINGS.title}</title>
         <link rel="stylesheet" href="/static/gfm.css" />
         {IS_DEV ? <script src="/hmr.js"></script> : null}
       </Helmet>
-      <h1 class="text-5xl font-bold">{blogSettings.title}</h1>
-      {blogSettings.subtitle
-        ? <h2 class="text-3xl">{blogSettings.subtitle}</h2>
+      <h1 class="text-5xl font-bold">{BLOG_SETTINGS.title}</h1>
+      {BLOG_SETTINGS.subtitle
+        ? <h2 class="text-3xl">{BLOG_SETTINGS.subtitle}</h2>
         : null}
-      {headerContent ? <div class="prose">{headerContent}</div> : null}
+      {HEADER_CONTENT ? <div class="prose">{HEADER_CONTENT}</div> : null}
       <div class="mt-8">
         {postIndex.map((post) => <PostCard post={post} />)}
       </div>
@@ -321,7 +320,7 @@ function serveRSS(req: Request) {
     },
   });
 
-  for (const [_key, post] of posts.entries()) {
+  for (const [_key, post] of POSTS.entries()) {
     const item: FeedItem = {
       id: `${origin}/blog/${post.title}`,
       title: post.title,
