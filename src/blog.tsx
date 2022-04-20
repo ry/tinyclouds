@@ -16,7 +16,7 @@ import type { Item as FeedItem } from "https://esm.sh/feed@4.2.2?pin=v57";
 
 const HMR_CLIENT_PATH = join(
   fromFileUrl(dirname(import.meta.url)),
-  "../hmr.js",
+  "./hmr.js",
 );
 const IS_DEV = Deno.args.includes("--dev");
 const HMR_SOCKETS: Set<WebSocket> = new Set();
