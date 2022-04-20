@@ -39,7 +39,7 @@ the web, the fundamental medium of human information.
 Scripting languages make a lot of sense for many server-side problems. Most of
 the code being written in the web service space is not compute bound. Rather it
 is bound by productivity: speed it can be written and the monetary cost of the
-developers. Dynamic languages allow code to be written faster and cheaper.  The
+developers. Dynamic languages allow code to be written faster and cheaper. The
 scripting languages (Python, Ruby, Lua, JavaScript, Perl) are all pretty much
 the same. There are differences in syntax and APIs, but there’s little else to
 contrast them with. Anyone who has learned more than one of these can attest to

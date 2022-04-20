@@ -14,6 +14,13 @@ import { parse as frontMatter } from "https://deno.land/x/frontmatter@v0.1.4/mod
 import { Feed } from "https://esm.sh/feed@4.2.2?pin=v57";
 import type { Item as FeedItem } from "https://esm.sh/feed@4.2.2?pin=v57";
 
+const HMR_CLIENT_PATH = join(
+  fromFileUrl(dirname(import.meta.url)),
+  "../hmr.js",
+);
+const IS_DEV = Deno.args.includes("--dev");
+const HMR_SOCKETS: Set<WebSocket> = new Set();
+
 const posts = new Map<string, Post>();
 let headerContent: undefined | string = undefined;
 let blogSettings: BlogSettings = {
@@ -84,6 +91,9 @@ export default async function blog(url: string, settings?: BlogSettings) {
       for (const path of event.paths) {
         if (path.endsWith(".md")) {
           await loadPost(path);
+          HMR_SOCKETS.forEach((socket) => {
+            socket.send("refresh");
+          });
         }
       }
     }
@@ -132,7 +142,7 @@ async function loadHeader(path: string) {
   headerContent = content;
 }
 
-function handler(req: Request) {
+async function handler(req: Request) {
   const { pathname } = new URL(req.url);
   if (pathname == "/static/gfm.css") {
     return new Response(gfm.CSS, {
@@ -141,6 +151,20 @@ function handler(req: Request) {
       },
     });
   }
+  if (pathname == "/hmr.js") {
+    const hmrClient = await Deno.readTextFile(HMR_CLIENT_PATH);
+    return new Response(hmrClient, {
+      headers: {
+        "content-type": "application/javascript",
+      },
+    });
+  }
+
+  const res = hmrMiddleware(req);
+  if (res) {
+    return res;
+  }
+
   if (pathname == "/") {
     return ssr(() => <Index />);
   }
@@ -156,6 +180,20 @@ function handler(req: Request) {
   return ssr(() => <Post post={post} />);
 }
 
+function hmrMiddleware(req: Request): Response | null {
+  if (req.url.endsWith("/hmr")) {
+    const { response, socket } = Deno.upgradeWebSocket(req);
+    HMR_SOCKETS.add(socket);
+    socket.onclose = () => {
+      HMR_SOCKETS.delete(socket);
+    };
+
+    return response;
+  }
+
+  return null;
+}
+
 const Index = () => {
   const postIndex = [];
   for (const [_key, post] of posts.entries()) {
@@ -168,6 +206,7 @@ const Index = () => {
       <Helmet>
         <title>{blogSettings.title}</title>
         <link rel="stylesheet" href="/static/gfm.css" />
+        {IS_DEV ? <script src="/hmr.js"></script> : null}
       </Helmet>
       <h1 class="text-5xl font-bold">{blogSettings.title}</h1>
       {blogSettings.subtitle
@@ -212,6 +251,7 @@ function Post({ post }: { post: Post }) {
         <link rel="stylesheet" href="/static/gfm.css" />
         {post.snippet && <meta name="description" content={post.snippet} />}
         <meta property="og:title" content={post.title} />
+        {IS_DEV ? <script src="/hmr.js"></script> : null}
       </Helmet>
       {post.coverHtml && (
         <div dangerouslySetInnerHTML={{ __html: post.coverHtml }} />
