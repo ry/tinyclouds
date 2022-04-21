@@ -307,7 +307,7 @@ function serveRSS(req: Request) {
   const origin = url.origin;
   const copyright = `Copyright ${new Date().getFullYear()} ${origin}`;
   const feed = new Feed({
-    title: BLOG_SETTINGS.title,
+    title: BLOG_SETTINGS.title ?? "Blog",
     description: BLOG_SETTINGS.subtitle,
     id: `${origin}/blog`,
     link: `${origin}/blog`,
