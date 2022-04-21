@@ -2,6 +2,6 @@
 // it's 3 times longer than the main.js boilerplate.
 {
   "tasks": {
-    "dev": "deno run -A --no-check=remote --watch main.js"
+    "dev": "deno run -A --no-check=remote --watch main.js --dev"
   }
 }
