@@ -56,7 +56,7 @@ export interface Post {
  */
 export default async function blog(url: string, settings?: BlogSettings) {
   const dirUrl = dirname(url);
-  const path = fromFileUrl(dirUrl);
+  const postsDirPath = join(fromFileUrl(dirUrl), "posts");
   const cwd = Deno.cwd();
 
   if (settings) {
@@ -68,17 +68,14 @@ export default async function blog(url: string, settings?: BlogSettings) {
   // Read posts from the current directory and store them in memory.
   // TODO(@satyarohith): not efficient for large number of posts.
   for await (
-    const entry of walk(path, {
-      // Exclude README.md/readme.md and header.md
-      skip: [new RegExp("readme.md", "i"), new RegExp("header.md")],
-    })
+    const entry of walk(postsDirPath)
   ) {
     if (entry.isFile && entry.path.endsWith(".md")) {
       await loadPost(entry.path);
     }
   }
 
-  await loadHeader(join(path, "./header.md"));
+  await loadHeader(join(fromFileUrl(dirUrl), "./header.md"));
 
   console.log("http://localhost:8000/");
   serve(handler);
