@@ -307,8 +307,8 @@ function serveRSS(req: Request) {
   const origin = url.origin;
   const copyright = `Copyright ${new Date().getFullYear()} ${origin}`;
   const feed = new Feed({
-    title: "Deno",
-    description: "The latest news from Deno Land Inc.",
+    title: BLOG_SETTINGS.title,
+    description: BLOG_SETTINGS.subtitle,
     id: `${origin}/blog`,
     link: `${origin}/blog`,
     language: "en",
