@@ -13,6 +13,8 @@ import * as gfm from "https://deno.land/x/gfm@0.1.20/mod.ts";
 import { parse as frontMatter } from "https://deno.land/x/frontmatter@v0.1.4/mod.ts";
 import { Feed } from "https://esm.sh/feed@4.2.2?pin=v57";
 import type { Item as FeedItem } from "https://esm.sh/feed@4.2.2?pin=v57";
+import { createReporter } from "https://deno.land/x/g_a@0.1.2/mod.ts";
+import type { Reporter as GaReporter } from "https://deno.land/x/g_a@0.1.2/mod.ts";
 
 const HMR_CLIENT_PATH = join(
   fromFileUrl(dirname(import.meta.url)),
@@ -25,11 +27,14 @@ let HEADER_CONTENT: undefined | string = undefined;
 let BLOG_SETTINGS: BlogSettings = {
   title: "Blog",
   subtitle: undefined,
+  gaKey: undefined,
 };
+let GA_REPORTER: undefined | GaReporter;
 
 export interface BlogSettings {
   title?: string;
   subtitle?: string;
+  gaKey?: string;
 }
 
 /** Represents a Post in the Blog. */
@@ -64,6 +69,10 @@ export default async function blog(url: string, settings?: BlogSettings) {
       ...BLOG_SETTINGS,
       ...settings,
     };
+
+    if (BLOG_SETTINGS.gaKey) {
+      GA_REPORTER = createReporter({ id: BLOG_SETTINGS.gaKey });
+    }
   }
   // Read posts from the current directory and store them in memory.
   // TODO(@satyarohith): not efficient for large number of posts.
@@ -78,7 +87,28 @@ export default async function blog(url: string, settings?: BlogSettings) {
   await loadHeader(join(fromFileUrl(dirUrl), "./header.md"));
 
   console.log("http://localhost:8000/");
-  serve(handler);
+  serve(async (req: Request, connInfo) => {
+    let err: undefined | Error;
+    let res: undefined | Response;
+
+    const start = performance.now();
+    try {
+      res = await handler(req) as Response;
+    } catch (e) {
+      err = e;
+    } finally {
+      if (GA_REPORTER) {
+        GA_REPORTER(req, connInfo, res as Response, start, err);
+      }
+    }
+
+    if (!res) {
+      res = new Response("Internal server error", {
+        status: 500,
+      });
+    }
+    return res;
+  });
 
   // Watcher watches for .md file changes and updates the posts.
   const watcher = Deno.watchFs(cwd);
