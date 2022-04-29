@@ -4,11 +4,11 @@
 /// <reference lib="dom.asynciterable" />
 /// <reference lib="deno.ns" />
 import { h, Helmet, ssr } from "https://crux.land/nanossr@0.0.4";
-import { serveDir } from "https://deno.land/std@0.134.0/http/file_server.ts";
-import { walk } from "https://deno.land/std@0.134.0/fs/walk.ts";
-import { dirname, relative } from "https://deno.land/std@0.134.0/path/mod.ts";
-import { fromFileUrl, join } from "https://deno.land/std@0.134.0/path/mod.ts";
-import { serve } from "https://deno.land/std@0.134.0/http/mod.ts";
+import { serveDir } from "https://deno.land/std@0.137.0/http/file_server.ts";
+import { walk } from "https://deno.land/std@0.137.0/fs/walk.ts";
+import { dirname, relative } from "https://deno.land/std@0.137.0/path/mod.ts";
+import { fromFileUrl, join } from "https://deno.land/std@0.137.0/path/mod.ts";
+import { serve } from "https://deno.land/std@0.137.0/http/mod.ts";
 import * as gfm from "https://deno.land/x/gfm@0.1.20/mod.ts";
 import { parse as frontMatter } from "https://deno.land/x/frontmatter@v0.1.4/mod.ts";
 import { Feed } from "https://esm.sh/feed@4.2.2?pin=v57";
@@ -93,7 +93,6 @@ export default async function blog(url: string, settings?: BlogSettings) {
   }
   await loadHeader(join(fromFileUrl(dirUrl), "./header.md"));
 
-  console.log("http://localhost:8000/");
   serve(async (req: Request, connInfo) => {
     let err: undefined | Error;
     let res: undefined | Response;
