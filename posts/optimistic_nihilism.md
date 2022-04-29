@@ -2,7 +2,7 @@
 title: Optimistic Nihilism
 publish_date: 2017-08
 cover_html: <svg class="w-full" height="350" width="100%" background="black"><circle cx="50%" cy="170" r="150" stroke="white" stroke-width="10" fill="black" alpha="50%"/></svg>
-background: black
+background: #eef
 ---
 
 This post is in response to the
