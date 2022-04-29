@@ -239,7 +239,7 @@ const Index = (
   postIndex.sort((a, b) => b.publishDate.getTime() - a.publishDate.getTime());
 
   return (
-    <div class="max-w-screen-md px-4 pt-16 mx-auto">
+    <div class="max-w-screen-sm px-4 pt-16 mx-auto">
       <Helmet>
         <title>{settings.title}</title>
         <link rel="stylesheet" href="/static/gfm.css" />
@@ -301,7 +301,7 @@ function Post({ post, hmr }: { post: Post; hmr: boolean }) {
       {post.coverHtml && (
         <div dangerouslySetInnerHTML={{ __html: post.coverHtml }} />
       )}
-      <article class="max-w-screen-md px-4 pt-8 md:pt-16 mx-auto">
+      <article class="max-w-screen-sm px-4 pt-8 md:pt-16 mx-auto">
         <h1 class="text-5xl text-gray-900 font-bold">
           {post.title}
         </h1>
