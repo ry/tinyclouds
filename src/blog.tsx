@@ -192,7 +192,7 @@ async function handler(req: Request) {
     });
   }
 
-  if (req.url.endsWith("/hmr")) {
+  if (pathname.endsWith("/hmr")) {
     const { response, socket } = Deno.upgradeWebSocket(req);
     HMR_SOCKETS.add(socket);
     socket.onclose = () => {
@@ -216,13 +216,18 @@ async function handler(req: Request) {
     return serveRSS(req, BLOG_SETTINGS, POSTS);
   }
 
-  const post = POSTS.get(pathname);
-  if (!post) {
-    // TODO(bartlomieju): why is this needed?
+  if (pathname.startsWith("/static/")) {
     return serveDir(req);
   }
 
-  return ssr(() => <Post post={post} hmr={IS_DEV} />);
+  const post = POSTS.get(pathname);
+  if (post) {
+    return ssr(() => <Post post={post} hmr={IS_DEV} />);
+  }
+
+  return new Response("Not found", {
+    status: 404,
+  });
 }
 
 const Index = (
