@@ -284,7 +284,11 @@ function Post({ post, hmr }: { post: Post; hmr: boolean }) {
   return (
     <div class="min-h-screen">
       <Helmet>
-        {post.background && <body style={`background: ${post.background}`} />}
+        {post.background && <style type="text/css">{`
+          body {
+            background-color: ${post.background};
+          }
+        `}</style>}
         <title>{post.title}</title>
         <link rel="stylesheet" href="/static/gfm.css" />
         <meta property="og:title" content={post.title} />
