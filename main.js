@@ -3,6 +3,5 @@ import blog from "./src/blog.tsx";
 blog(import.meta.url, {
   title: "Tiny Clouds",
   subtitle: "This is a demo of Deno blog",
-  // Enable Google Analytics
-  // gaKey: "..."
+  gaKey: "UA-91675022-1"
 });
