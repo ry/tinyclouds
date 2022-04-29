@@ -286,16 +286,12 @@ function Post({ post, hmr }: { post: Post; hmr: boolean }) {
       <Helmet>
         {post.background && (
           <style type="text/css">
-            {`
-          body {
-            background: ${post.background};
-          }
-          .markdown-body {
-            --color-canvas-default: transparent;
-          }
-        `}
+            {` body { background: ${post.background}; } `}
           </style>
         )}
+        <style type="text/css">
+          {` .markdown-body { --color-canvas-default: transparent; } `}
+        </style>
         <title>{post.title}</title>
         <link rel="stylesheet" href="/static/gfm.css" />
         <meta property="og:title" content={post.title} />
