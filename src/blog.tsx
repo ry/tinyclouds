@@ -20,7 +20,7 @@ const HMR_CLIENT_PATH = join(
   fromFileUrl(dirname(import.meta.url)),
   "./hmr.js",
 );
-const IS_DEV = Deno.args.includes("--dev");
+const IS_DEV = Deno.args.includes("--dev") && "watchFs" in Deno;
 const HMR_SOCKETS: Set<WebSocket> = new Set();
 const POSTS = new Map<string, Post>();
 let HEADER_CONTENT: undefined | string = undefined;
@@ -110,7 +110,13 @@ export default async function blog(url: string, settings?: BlogSettings) {
     return res;
   });
 
-  // Watcher watches for .md file changes and updates the posts.
+  if (IS_DEV) {
+    watchForChanges(cwd).catch(() => {});
+  }
+}
+
+// Watcher watches for .md file changes and updates the posts.
+async function watchForChanges(cwd: string) {
   const watcher = Deno.watchFs(cwd);
   for await (const event of watcher) {
     if (event.kind === "modify" || event.kind === "create") {
