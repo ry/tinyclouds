@@ -305,10 +305,9 @@ function Post({ post, hmr }: { post: Post; hmr: boolean }) {
           </p>
         </div>
         <hr class="my-8" />
-        <div
-          dangerouslySetInnerHTML={{ __html: html }}
-          class="markdown-body"
-        />
+        <div class="markdown-body">
+          <div innerHTML={{ __dangerousHtml: html }} />
+        </div>
       </article>
     </div>
   );
