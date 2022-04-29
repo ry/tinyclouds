@@ -288,7 +288,7 @@ function Post({ post, hmr }: { post: Post; hmr: boolean }) {
           <style type="text/css">
             {`
           body {
-            background-color: #${post.background};
+            background: ${post.background};
           }
           .markdown-body {
             --color-canvas-default: transparent;
