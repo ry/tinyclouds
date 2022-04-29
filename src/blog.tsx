@@ -244,13 +244,13 @@ const Index = (
       <Helmet>
         <title>{settings.title}</title>
         <link rel="stylesheet" href="/static/gfm.css" />
-        {hmr ? <script src="/hmr.js"></script> : null}
+        {hmr && <script src="/hmr.js"></script>}
       </Helmet>
       <h1 class="text-5xl font-bold">{settings.title}</h1>
 
-      {settings.subtitle ? <h2 class="text-3xl">{settings.subtitle}</h2> : null}
+      {settings.subtitle && <h2 class="text-3xl">{settings.subtitle}</h2>}
 
-      {header ? <div class="prose">{header}</div> : null}
+      {header && <div class="prose">{header}</div>}
 
       <div class="mt-8">
         {postIndex.map((post) => <PostCard post={post} />)}
@@ -288,9 +288,9 @@ function Post({ post, hmr }: { post: Post; hmr: boolean }) {
         {post.background && <body style={`background: ${post.background}`} />}
         <title>{post.title}</title>
         <link rel="stylesheet" href="/static/gfm.css" />
-        {post.snippet && <meta name="description" content={post.snippet} />}
         <meta property="og:title" content={post.title} />
-        {hmr ? <script src="/hmr.js"></script> : null}
+        {post.snippet && <meta name="description" content={post.snippet} />}
+        {hmr && <script src="/hmr.js"></script>}
       </Helmet>
       {post.coverHtml && (
         <div dangerouslySetInnerHTML={{ __html: post.coverHtml }} />
