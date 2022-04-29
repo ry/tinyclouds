@@ -29,7 +29,6 @@ let BLOG_SETTINGS: BlogSettings = {
   subtitle: undefined,
   gaKey: undefined,
 };
-let GA_REPORTER: undefined | GaReporter;
 
 export interface BlogSettings {
   title?: string;
@@ -63,6 +62,7 @@ export default async function blog(url: string, settings?: BlogSettings) {
   const dirUrl = dirname(url);
   const postsDirPath = join(fromFileUrl(dirUrl), "posts");
   const cwd = Deno.cwd();
+  let gaReporter: undefined | GaReporter;
 
   if (settings) {
     BLOG_SETTINGS = {
@@ -71,9 +71,12 @@ export default async function blog(url: string, settings?: BlogSettings) {
     };
 
     if (BLOG_SETTINGS.gaKey) {
-      GA_REPORTER = createReporter({ id: BLOG_SETTINGS.gaKey });
+      gaReporter = createReporter({ id: BLOG_SETTINGS.gaKey });
     }
   }
+
+  // TODO(bartlomieju): this loading logic could be handled by a single helper
+  // function
   // Read posts from the current directory and store them in memory.
   // TODO(@satyarohith): not efficient for large number of posts.
   for await (
@@ -83,6 +86,8 @@ export default async function blog(url: string, settings?: BlogSettings) {
       await loadPost(entry.path);
     }
   }
+  // FIXME(bartlomieju): seems like using `cwd` is wrong here, since `url` arg
+  // to `blog` might be a remote URL
   if (IS_DEV) {
     watchForChanges(cwd).catch(() => {});
   }
@@ -98,16 +103,13 @@ export default async function blog(url: string, settings?: BlogSettings) {
       res = await handler(req) as Response;
     } catch (e) {
       err = e;
-    } finally {
-      if (GA_REPORTER) {
-        GA_REPORTER(req, connInfo, res as Response, start, err);
-      }
-    }
-
-    if (!res) {
       res = new Response("Internal server error", {
         status: 500,
       });
+    } finally {
+      if (gaReporter) {
+        gaReporter(req, connInfo, res!, start, err);
+      }
     }
     return res;
   });
@@ -190,29 +192,6 @@ async function handler(req: Request) {
     });
   }
 
-  const res = hmrMiddleware(req);
-  if (res) {
-    return res;
-  }
-
-  if (pathname == "/") {
-    return ssr(() => (
-      <Index settings={BLOG_SETTINGS} header={HEADER_CONTENT} hmr={IS_DEV} />
-    ));
-  }
-  if (pathname == "/feed") {
-    return serveRSS(req, BLOG_SETTINGS, POSTS);
-  }
-
-  const post = POSTS.get(pathname);
-  if (!post) {
-    return serveDir(req);
-  }
-
-  return ssr(() => <Post post={post} hmr={IS_DEV} />);
-}
-
-function hmrMiddleware(req: Request): Response | null {
   if (req.url.endsWith("/hmr")) {
     const { response, socket } = Deno.upgradeWebSocket(req);
     HMR_SOCKETS.add(socket);
@@ -223,18 +202,39 @@ function hmrMiddleware(req: Request): Response | null {
     return response;
   }
 
-  return null;
+  if (pathname == "/") {
+    return ssr(() => (
+      <Index
+        posts={POSTS}
+        settings={BLOG_SETTINGS}
+        header={HEADER_CONTENT}
+        hmr={IS_DEV}
+      />
+    ));
+  }
+  if (pathname == "/feed") {
+    return serveRSS(req, BLOG_SETTINGS, POSTS);
+  }
+
+  const post = POSTS.get(pathname);
+  if (!post) {
+    // TODO(bartlomieju): why is this needed?
+    return serveDir(req);
+  }
+
+  return ssr(() => <Post post={post} hmr={IS_DEV} />);
 }
 
 const Index = (
-  { settings, header, hmr }: {
+  { posts, settings, header, hmr }: {
+    posts: Map<string, Post>;
     settings: BlogSettings;
     header?: string;
     hmr: boolean;
   },
 ) => {
   const postIndex = [];
-  for (const [_key, post] of POSTS.entries()) {
+  for (const [_key, post] of posts.entries()) {
     postIndex.push(post);
   }
   postIndex.sort((a, b) => b.publishDate.getTime() - a.publishDate.getTime());
@@ -302,19 +302,7 @@ function Post({ post, hmr }: { post: Post; hmr: boolean }) {
         <div class="mt-8 text-gray-500">
           <p class="flex gap-2 items-center">
             <PrettyDate date={post.publishDate} />
-            <a href="/feed" class="hover:text-gray-700" title="Atom Feed">
-              <svg
-                class="w-4 h-4"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-              >
-                <path d="M5 3a1 1 0 000 2c5.523 0 10 4.477 10 10a1 1 0 102 0C17 8.373 11.627 3 5 3z">
-                </path>
-                <path d="M4 9a1 1 0 011-1 7 7 0 017 7 1 1 0 11-2 0 5 5 0 00-5-5 1 1 0 01-1-1zM3 15a2 2 0 114 0 2 2 0 01-4 0z">
-                </path>
-              </svg>
-            </a>
+            <RssFeedIcon />
           </p>
         </div>
         <hr class="my-8" />
@@ -338,6 +326,24 @@ function PrettyDate({ date }: { date: Date }) {
     <time dateTime={date.toISOString()}>
       {formatter.format(date)}
     </time>
+  );
+}
+
+function RssFeedIcon() {
+  return (
+    <a href="/feed" class="hover:text-gray-700" title="Atom Feed">
+      <svg
+        class="w-4 h-4"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 20 20"
+        fill="currentColor"
+      >
+        <path d="M5 3a1 1 0 000 2c5.523 0 10 4.477 10 10a1 1 0 102 0C17 8.373 11.627 3 5 3z">
+        </path>
+        <path d="M4 9a1 1 0 011-1 7 7 0 017 7 1 1 0 11-2 0 5 5 0 00-5-5 1 1 0 01-1-1zM3 15a2 2 0 114 0 2 2 0 01-4 0z">
+        </path>
+      </svg>
+    </a>
   );
 }
 
