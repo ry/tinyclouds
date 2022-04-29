@@ -83,7 +83,9 @@ export default async function blog(url: string, settings?: BlogSettings) {
       await loadPost(entry.path);
     }
   }
-
+  if (IS_DEV) {
+    watchForChanges(cwd).catch(() => {});
+  }
   await loadHeader(join(fromFileUrl(dirUrl), "./header.md"));
 
   console.log("http://localhost:8000/");
@@ -109,10 +111,6 @@ export default async function blog(url: string, settings?: BlogSettings) {
     }
     return res;
   });
-
-  if (IS_DEV) {
-    watchForChanges(cwd).catch(() => {});
-  }
 }
 
 // Watcher watches for .md file changes and updates the posts.
@@ -198,10 +196,12 @@ async function handler(req: Request) {
   }
 
   if (pathname == "/") {
-    return ssr(() => <Index />);
+    return ssr(() => (
+      <Index settings={BLOG_SETTINGS} header={HEADER_CONTENT} hmr={IS_DEV} />
+    ));
   }
   if (pathname == "/feed") {
-    return serveRSS(req);
+    return serveRSS(req, BLOG_SETTINGS, POSTS);
   }
 
   const post = POSTS.get(pathname);
@@ -209,7 +209,7 @@ async function handler(req: Request) {
     return serveDir(req);
   }
 
-  return ssr(() => <Post post={post} />);
+  return ssr(() => <Post post={post} hmr={IS_DEV} />);
 }
 
 function hmrMiddleware(req: Request): Response | null {
@@ -226,7 +226,13 @@ function hmrMiddleware(req: Request): Response | null {
   return null;
 }
 
-const Index = () => {
+const Index = (
+  { settings, header, hmr }: {
+    settings: BlogSettings;
+    header?: string;
+    hmr: boolean;
+  },
+) => {
   const postIndex = [];
   for (const [_key, post] of POSTS.entries()) {
     postIndex.push(post);
@@ -236,15 +242,16 @@ const Index = () => {
   return (
     <div class="max-w-screen-md px-4 pt-16 mx-auto">
       <Helmet>
-        <title>{BLOG_SETTINGS.title}</title>
+        <title>{settings.title}</title>
         <link rel="stylesheet" href="/static/gfm.css" />
-        {IS_DEV ? <script src="/hmr.js"></script> : null}
+        {hmr ? <script src="/hmr.js"></script> : null}
       </Helmet>
-      <h1 class="text-5xl font-bold">{BLOG_SETTINGS.title}</h1>
-      {BLOG_SETTINGS.subtitle
-        ? <h2 class="text-3xl">{BLOG_SETTINGS.subtitle}</h2>
-        : null}
-      {HEADER_CONTENT ? <div class="prose">{HEADER_CONTENT}</div> : null}
+      <h1 class="text-5xl font-bold">{settings.title}</h1>
+
+      {settings.subtitle ? <h2 class="text-3xl">{settings.subtitle}</h2> : null}
+
+      {header ? <div class="prose">{header}</div> : null}
+
       <div class="mt-8">
         {postIndex.map((post) => <PostCard post={post} />)}
       </div>
@@ -272,7 +279,7 @@ function PostCard({ post }: { post: Post }) {
   );
 }
 
-function Post({ post }: { post: Post }) {
+function Post({ post, hmr }: { post: Post; hmr: boolean }) {
   const html = gfm.render(post.markdown);
 
   return (
@@ -283,7 +290,7 @@ function Post({ post }: { post: Post }) {
         <link rel="stylesheet" href="/static/gfm.css" />
         {post.snippet && <meta name="description" content={post.snippet} />}
         <meta property="og:title" content={post.title} />
-        {IS_DEV ? <script src="/hmr.js"></script> : null}
+        {hmr ? <script src="/hmr.js"></script> : null}
       </Helmet>
       {post.coverHtml && (
         <div dangerouslySetInnerHTML={{ __html: post.coverHtml }} />
@@ -335,13 +342,17 @@ function PrettyDate({ date }: { date: Date }) {
 }
 
 /** Serves the rss/atom feed of the blog. */
-function serveRSS(req: Request) {
+function serveRSS(
+  req: Request,
+  settings: BlogSettings,
+  posts: Map<string, Post>,
+) {
   const url = new URL(req.url);
   const origin = url.origin;
   const copyright = `Copyright ${new Date().getFullYear()} ${origin}`;
   const feed = new Feed({
-    title: BLOG_SETTINGS.title ?? "Blog",
-    description: BLOG_SETTINGS.subtitle,
+    title: settings.title ?? "Blog",
+    description: settings.subtitle,
     id: `${origin}/blog`,
     link: `${origin}/blog`,
     language: "en",
@@ -353,7 +364,7 @@ function serveRSS(req: Request) {
     },
   });
 
-  for (const [_key, post] of POSTS.entries()) {
+  for (const [_key, post] of posts.entries()) {
     const item: FeedItem = {
       id: `${origin}/blog/${post.title}`,
       title: post.title,
