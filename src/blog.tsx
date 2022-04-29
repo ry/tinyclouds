@@ -217,12 +217,12 @@ async function handler(req: Request) {
   }
 
   const post = POSTS.get(pathname);
-  if (!post) {
-    // TODO(bartlomieju): why is this needed?
-    return serveDir(req);
+  if (post) {
+    return ssr(() => <Post post={post} hmr={IS_DEV} />);
   }
 
-  return ssr(() => <Post post={post} hmr={IS_DEV} />);
+  // Fallback to serving static files, this will handle 404s as well.
+  return serveDir(req);
 }
 
 const Index = (
