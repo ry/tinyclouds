@@ -3,33 +3,20 @@
 /// <reference lib="dom" />
 /// <reference lib="dom.asynciterable" />
 /// <reference lib="deno.ns" />
-import { h, Helmet, ssr } from "https://crux.land/nanossr@0.0.4";
+
 import { serveDir } from "https://deno.land/std@0.137.0/http/file_server.ts";
 import { walk } from "https://deno.land/std@0.137.0/fs/walk.ts";
 import { dirname, relative } from "https://deno.land/std@0.137.0/path/mod.ts";
 import { fromFileUrl, join } from "https://deno.land/std@0.137.0/path/mod.ts";
 import { serve } from "https://deno.land/std@0.137.0/http/mod.ts";
+
+import { h, Helmet, ssr } from "https://crux.land/nanossr@0.0.4";
 import * as gfm from "https://deno.land/x/gfm@0.1.20/mod.ts";
 import { parse as frontMatter } from "https://deno.land/x/frontmatter@v0.1.4/mod.ts";
-import { Feed } from "https://esm.sh/feed@4.2.2?pin=v57";
-import type { Item as FeedItem } from "https://esm.sh/feed@4.2.2?pin=v57";
 import { createReporter } from "https://deno.land/x/g_a@0.1.2/mod.ts";
 import type { Reporter as GaReporter } from "https://deno.land/x/g_a@0.1.2/mod.ts";
-
-const HMR_CLIENT_PATH = join(
-  fromFileUrl(dirname(import.meta.url)),
-  "./hmr.js",
-);
-const IS_DEV = Deno.args.includes("--dev") && "watchFs" in Deno;
-const HMR_SOCKETS: Set<WebSocket> = new Set();
-const POSTS = new Map<string, Post>();
-let HEADER_CONTENT: undefined | string = undefined;
-let BLOG_SETTINGS: BlogSettings = {
-  title: "Blog",
-  subtitle: undefined,
-  header: undefined,
-  gaKey: undefined,
-};
+import { Feed } from "https://esm.sh/feed@4.2.2?pin=v57";
+import type { Item as FeedItem } from "https://esm.sh/feed@4.2.2?pin=v57";
 
 export interface BlogSettings {
   title?: string;
@@ -53,11 +40,28 @@ export interface Post {
   ogImage: string;
 }
 
+const IS_DEV = Deno.args.includes("--dev") && "watchFs" in Deno;
+const HMR_SOCKETS: Set<WebSocket> = new Set();
+const POSTS = new Map<string, Post>();
+
 /** The main function of the library.
  *
  * ```js
  * import blog from "https://deno.land/x/blog/blog.tsx";
  * blog(import.meta.url);
+ * ```
+ *
+ * Configure it:
+ *
+ * ```js
+ * import blog from "https://deno.land/x/blog/blog.tsx";
+ * blog(import.meta.url, {
+ *   title: "My blog title",
+ *   subtitle: "Subtitle",
+ *   header:
+ *     `A header that will be visible on the index page. You can use *Markdown* here.`,
+ *   gaKey: "GA-ANALYTICS-KEY",
+ * });
  * ```
  */
 export default async function blog(url: string, settings?: BlogSettings) {
@@ -66,14 +70,18 @@ export default async function blog(url: string, settings?: BlogSettings) {
   const cwd = Deno.cwd();
   let gaReporter: undefined | GaReporter;
 
+  let blogSettings: BlogSettings = {
+    title: "Blog",
+  };
+
   if (settings) {
-    BLOG_SETTINGS = {
-      ...BLOG_SETTINGS,
+    blogSettings = {
+      ...blogSettings,
       ...settings,
     };
 
-    if (BLOG_SETTINGS.gaKey) {
-      gaReporter = createReporter({ id: BLOG_SETTINGS.gaKey });
+    if (blogSettings.gaKey) {
+      gaReporter = createReporter({ id: blogSettings.gaKey });
     }
 
     if (settings.header) {
@@ -81,7 +89,7 @@ export default async function blog(url: string, settings?: BlogSettings) {
         content: string;
       };
 
-      HEADER_CONTENT = content;
+      blogSettings.header = content;
     }
   }
 
@@ -108,7 +116,7 @@ export default async function blog(url: string, settings?: BlogSettings) {
 
     const start = performance.now();
     try {
-      res = await handler(req) as Response;
+      res = await handler(req, blogSettings) as Response;
     } catch (e) {
       err = e;
       res = new Response("Internal server error", {
@@ -167,7 +175,7 @@ async function loadPost(path: string) {
   console.log("Load: ", post.pathname);
 }
 
-async function handler(req: Request) {
+async function handler(req: Request, blogSettings: BlogSettings) {
   const { pathname } = new URL(req.url);
   if (pathname == "/static/gfm.css") {
     return new Response(gfm.CSS, {
@@ -177,6 +185,10 @@ async function handler(req: Request) {
     });
   }
   if (pathname == "/hmr.js") {
+    const HMR_CLIENT_PATH = join(
+      fromFileUrl(dirname(import.meta.url)),
+      "./hmr.js",
+    );
     const hmrClient = await Deno.readTextFile(HMR_CLIENT_PATH);
     return new Response(hmrClient, {
       headers: {
@@ -185,7 +197,7 @@ async function handler(req: Request) {
     });
   }
 
-  if (req.url.endsWith("/hmr")) {
+  if (pathname.endsWith("/hmr")) {
     const { response, socket } = Deno.upgradeWebSocket(req);
     HMR_SOCKETS.add(socket);
     socket.onclose = () => {
@@ -199,14 +211,13 @@ async function handler(req: Request) {
     return ssr(() => (
       <Index
         posts={POSTS}
-        settings={BLOG_SETTINGS}
-        header={HEADER_CONTENT}
+        settings={blogSettings}
         hmr={IS_DEV}
       />
     ));
   }
   if (pathname == "/feed") {
-    return serveRSS(req, BLOG_SETTINGS, POSTS);
+    return serveRSS(req, blogSettings, POSTS);
   }
 
   const post = POSTS.get(pathname);
@@ -218,21 +229,20 @@ async function handler(req: Request) {
   return serveDir(req);
 }
 
-const Index = (
-  { posts, settings, header, hmr }: {
+export function Index(
+  { posts, settings, hmr }: {
     posts: Map<string, Post>;
     settings: BlogSettings;
-    header?: string;
     hmr: boolean;
   },
-) => {
+) {
   const postIndex = [];
   for (const [_key, post] of posts.entries()) {
     postIndex.push(post);
   }
   postIndex.sort((a, b) => b.publishDate.getTime() - a.publishDate.getTime());
 
-  const headerHtml = header && gfm.render(header);
+  const headerHtml = settings.header && gfm.render(settings.header);
 
   return (
     <div class="max-w-screen-sm px-4 pt-16 mx-auto">
@@ -258,7 +268,7 @@ const Index = (
       </div>
     </div>
   );
-};
+}
 
 function PostCard({ post }: { post: Post }) {
   return (
