@@ -27,12 +27,14 @@ let HEADER_CONTENT: undefined | string = undefined;
 let BLOG_SETTINGS: BlogSettings = {
   title: "Blog",
   subtitle: undefined,
+  header: undefined,
   gaKey: undefined,
 };
 
 export interface BlogSettings {
   title?: string;
   subtitle?: string;
+  header?: string;
   gaKey?: string;
 }
 
@@ -73,6 +75,14 @@ export default async function blog(url: string, settings?: BlogSettings) {
     if (BLOG_SETTINGS.gaKey) {
       gaReporter = createReporter({ id: BLOG_SETTINGS.gaKey });
     }
+
+    if (settings.header) {
+      const { content } = frontMatter(settings.header) as {
+        content: string;
+      };
+
+      HEADER_CONTENT = content;
+    }
   }
 
   // TODO(bartlomieju): this loading logic could be handled by a single helper
@@ -91,7 +101,6 @@ export default async function blog(url: string, settings?: BlogSettings) {
   if (IS_DEV) {
     watchForChanges(cwd).catch(() => {});
   }
-  await loadHeader(join(fromFileUrl(dirUrl), "./header.md"));
 
   serve(async (req: Request, connInfo) => {
     let err: undefined | Error;
@@ -156,21 +165,6 @@ async function loadPost(path: string) {
   };
   POSTS.set(pathname, post);
   console.log("Load: ", post.pathname);
-}
-
-async function loadHeader(path: string) {
-  let contents;
-  try {
-    contents = await Deno.readTextFile(path);
-  } catch (_) {
-    return;
-  }
-
-  const { content } = frontMatter(contents) as {
-    content: string;
-  };
-
-  HEADER_CONTENT = content;
 }
 
 async function handler(req: Request) {
@@ -238,6 +232,8 @@ const Index = (
   }
   postIndex.sort((a, b) => b.publishDate.getTime() - a.publishDate.getTime());
 
+  const headerHtml = header && gfm.render(header);
+
   return (
     <div class="max-w-screen-sm px-4 pt-16 mx-auto">
       <Helmet>
@@ -249,7 +245,13 @@ const Index = (
 
       {settings.subtitle && <h2 class="text-3xl">{settings.subtitle}</h2>}
 
-      {header && <div class="prose">{header}</div>}
+      {headerHtml && (
+        <div>
+          <div class="markdown-body">
+            <div innerHTML={{ __dangerousHtml: headerHtml }} />
+          </div>
+        </div>
+      )}
 
       <div class="mt-8">
         {postIndex.map((post) => <PostCard post={post} />)}

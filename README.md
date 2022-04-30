@@ -1,11 +1,24 @@
 # Blog
 
 Minimal boilerplate blogging. All you need is one boilerplate JavaScript file
-that has 2 lines of code
+that has 2 lines of code:
 
 ```js
 import blog from "https://deno.land/x/blog/blog.tsx";
 blog(import.meta.url);
+```
+
+Or 7 lines of code if you want to customize it:
+
+```js
+import blog from "https://deno.land/x/blog/blog.tsx";
+blog(import.meta.url, {
+  title: "My blog title",
+  subtitle: "Subtitle",
+  header:
+    `A header that will be visible on the index page. You can use *Markdown* here.`,
+  gaKey: "GA-ANALYTICS-KEY",
+});
 ```
 
 Currently this is both Ryan's personal blog posts combined with the blog
@@ -16,11 +29,11 @@ blog posts.
 To get started:
 
 ```
-deno run -A --no-check=remote --watch main.js
-```
-
-or to get HMR use:
-
-```
 deno run -A --no-check=remote --watch main.js --dev
+```
+
+Running in production
+
+```
+deno run -A --no-check main.js
 ```
