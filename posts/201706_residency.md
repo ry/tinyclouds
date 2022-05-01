@@ -8,7 +8,7 @@ Last year, after [nerding](http://tinyclouds.org/colorize/)
 [a](https://github.com/tensorflow/tensorflow/commit/555c7f7c4108ae91601dce2e2dea1ad1158d5977)
 [bit](https://github.com/ry/tensorflow-resnet) on TensorFlow, I applied and was
 accepted into the inaugural class of the
-[Google Brain Residency Program](https://research.google.com/teams/brain/residency/).
+[Google Brain Residency Program](https://research.google.com/teams/brain/201706_residency/).
 The program invites two dozen people, with varying backgrounds in ML, to spend a
 year at Google's deep learning research lab in Mountain View to work with the
 scientists and engineers pushing on the forefront of this technology.
@@ -72,7 +72,7 @@ sequences--usually words or characters. PixelCNN cleverly structures a CNN to
 produce exact probability distributions of pixels conditioned on previous ones.
 It's a mixture between an RNN and a CNN.
 
-<img src="residency/pixelcnn.png"/>
+<img src="201706_residency/pixelcnn.png"/>
 <center><small>Figure by van den Oord et al.</small></center>
 
 Surprisingly PixelCNNs generate very natural looking images. Unlike adversarial
@@ -88,7 +88,7 @@ images was very slow. Outputting images much larger than 64x64 could take hours!
 However I got some compelling results when I limited it small sizes and
 restricted datasets like faces or bedrooms.
 
-<img src="residency/sr_fig1.png"/>
+<img src="201706_residency/sr_fig1.png"/>
 
 At Google, one has relatively unbounded access to GPUs and CPUs. So part of this
 project was figuring out how to scale the training&mdash;because even with these
@@ -137,7 +137,7 @@ The result was this paper:
 
 ## PixColor: Another Attempt at Colorization
 
-<img src="residency/multimodal4.jpg"/>
+<img src="201706_residency/multimodal4.jpg"/>
 <center><small>Two color modes outputted by PixColor.</small></center>
 
 [Sergio Guadarrama](https://research.google.com/pubs/105009.html), the creator
@@ -151,7 +151,7 @@ colors are split), scaled the color channels to a very low-resolution
 interpolation. The resulting image looked practically indistinguishable from
 from the original with high resolution colors.
 
-<img src="residency/pixcolor_lowres.png">
+<img src="201706_residency/pixcolor_lowres.png">
 
 This suggested that we could make the colorization problem much easier by only
 attempting to predict the low-resolution colors. I had been ready to give up on
@@ -172,14 +172,14 @@ on ImageNet as measured both by crowd sourced evaluations and by color histogram
 intersection. Turns out, a properly trained PixelCNN models image statistics
 very well, without any sort of mode collapse.
 
-<img src="residency/pixcolor_histogram.png">
+<img src="201706_residency/pixcolor_histogram.png">
 
 Since the model yields a probability distribution over possible colorizations,
 for each grayscale input, we could sample from it multiple times to get multiple
 colorizations of the same input. This figure nicely describes the diversity
 distribution using [SSIM](https://en.wikipedia.org/wiki/Structural_similarity):
 
-<img src="residency/pixcolor_diversity.png">
+<img src="201706_residency/pixcolor_diversity.png">
 
 The model is still far from perfect. ImageNet, although large, is not indicative
 of all images. The model has a difficult time when applied to non-ImageNet
@@ -253,7 +253,7 @@ you would have fewer architectural decisions. It actually kind of worked on
 MNIST. Here each column is a noise image getting pushed progressively towards a
 red MNIST digit.
 
-<img src="residency/adversarial_dreams.png">
+<img src="201706_residency/adversarial_dreams.png">
 
 I couldn't get it working on CIFAR-10 and it seemed of limited practical
 benefit. It's too bad because "Adversarial Dreaming" would be a cool name for a
@@ -268,7 +268,7 @@ the feed-forward network. The weights were updated to maximize the likelihood
 under the PixelCNN. This didn't work at all. It produced weird images with line
 artifacts that like this:
 
-<img src="residency/gen_pixelcnn.png">
+<img src="201706_residency/gen_pixelcnn.png">
 
 ### Exploring Modifications to Async SGD
 
@@ -368,7 +368,7 @@ It's an exciting time for ML. There is ample work to be done at all levels: from
 the theory end to the framework end, much can be improved. It's almost as
 exciting as the creation of the internet. Grab a shovel!
 
-<a href="https://xkcd.com/1838/"><img src="residency/machine_learning.png">
+<a href="https://xkcd.com/1838/"><img src="201706_residency/machine_learning.png">
 
 <center><small>xkcd</small></center></a>
 
