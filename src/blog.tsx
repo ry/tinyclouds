@@ -251,7 +251,7 @@ export function Index(
         <link rel="stylesheet" href="/static/gfm.css" />
         {hmr && <script src="/hmr.js"></script>}
       </Helmet>
-      <h1 class="text-5xl font-bold">{settings.title}</h1>
+      <h1 class="text-5xl font-bold py-8">{settings.title}</h1>
 
       {settings.subtitle && <h2 class="text-3xl">{settings.subtitle}</h2>}
 
