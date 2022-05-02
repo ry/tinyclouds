@@ -155,6 +155,8 @@ async function loadPost(path: string) {
   let pathname = "/" + relative(Deno.cwd(), path);
   // Remove .md extension.
   pathname = pathname.slice(0, -3);
+  // Remove /posts prefix.
+  pathname = pathname.slice(6);
   const { content, data } = frontMatter(contents) as {
     data: Record<string, string>;
     content: string;
@@ -395,11 +397,11 @@ function serveRSS(
 
   for (const [_key, post] of posts.entries()) {
     const item: FeedItem = {
-      id: `${origin}/blog/${post.title}`,
+      id: `${origin}/${post.title}`,
       title: post.title,
       description: post.snippet,
       date: post.publishDate,
-      link: `${origin}/blog/${post.pathname}`,
+      link: `${origin}/${post.pathname}`,
       author: post.author?.split(",").map((author: string) => ({
         name: author.trim(),
       })),
