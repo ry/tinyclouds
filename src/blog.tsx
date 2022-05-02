@@ -352,16 +352,9 @@ function Post(
 }
 
 function PrettyDate({ date }: { date: Date }) {
-  const formatter = new Intl.DateTimeFormat("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
-
+  const formatted = date.toISOString().split('T')[0];
   return (
-    <time dateTime={date.toISOString()}>
-      {formatter.format(date)}
-    </time>
+    <time datetime={date.toISOString()}>{formatted}</time>
   );
 }
 
