@@ -43,6 +43,7 @@ export interface Post {
 const IS_DEV = Deno.args.includes("--dev") && "watchFs" in Deno;
 const HMR_SOCKETS: Set<WebSocket> = new Set();
 const POSTS = new Map<string, Post>();
+let HAS_STYLESHEET = false;
 
 /** The main function of the library.
  *
@@ -108,6 +109,15 @@ export default async function blog(url: string, settings?: BlogSettings) {
   // to `blog` might be a remote URL
   if (IS_DEV) {
     watchForChanges(cwd).catch(() => {});
+  }
+
+  const styleFilePath = join(fromFileUrl(dirUrl), "style.css");
+
+  try {
+    await Deno.stat(styleFilePath);
+    HAS_STYLESHEET = true;
+  } catch {
+    // pass
   }
 
   serve(async (req: Request, connInfo) => {
@@ -249,6 +259,7 @@ export function Index(
       <Helmet>
         <title>{settings.title}</title>
         <link rel="stylesheet" href="/static/gfm.css" />
+        {HAS_STYLESHEET && <link rel="stylesheet" href="/style.css" />}
         {hmr && <script src="/hmr.js"></script>}
       </Helmet>
       <h1 class="text-5xl font-bold py-8">{settings.title}</h1>
@@ -306,6 +317,7 @@ function Post({ post, hmr }: { post: Post; hmr: boolean }) {
         </style>
         <title>{post.title}</title>
         <link rel="stylesheet" href="/static/gfm.css" />
+        {HAS_STYLESHEET && <link rel="stylesheet" href="/style.css" />}
         <meta property="og:title" content={post.title} />
         {post.snippet && <meta name="description" content={post.snippet} />}
         {hmr && <script src="/hmr.js"></script>}

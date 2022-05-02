@@ -37,3 +37,5 @@ Running in production
 ```
 deno run -A --no-check main.js
 ```
+
+To provide a custom stylesheet, add `style.css` file in the root directory.
