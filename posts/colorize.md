@@ -33,14 +33,14 @@ image. The right image is the true color&mdash;which the model never gets to
 see. (These are images are from the validation set.)
 
 <div class="list">
-<img src="201601_colorize/best/6.jpg"/>
-<img src="201601_colorize/best/1.png"/>
-<img src="201601_colorize/best/4.png"/>
-<img src="201601_colorize/best/9.jpg"/>
-<img src="201601_colorize/best/2.png"/>
-<img src="201601_colorize/best/3.png"/>
-<img src="201601_colorize/best/7.jpg"/>
-<img src="201601_colorize/best/8.jpg"/>
+<img src="colorize/best/6.jpg"/>
+<img src="colorize/best/1.png"/>
+<img src="colorize/best/4.png"/>
+<img src="colorize/best/9.jpg"/>
+<img src="colorize/best/2.png"/>
+<img src="colorize/best/3.png"/>
+<img src="colorize/best/7.jpg"/>
+<img src="colorize/best/8.jpg"/>
 </div>
 
 There are bad cases too, which mostly look black and white or
@@ -84,7 +84,7 @@ by forwarding an image thru the VGG network and then extracting a few layers
 (specifically the tensors before each of the first 4 max-pooling operations),
 upscaling them to the original image size, and concatinating them all together.
 
-<img src="201601_colorize/hypercolumns.png">
+<img src="colorize/hypercolumns.png">
 
 The resulting hypercolumn tensor has tons of information about what's in that
 image. Using this information I should be able to color the image.
@@ -106,7 +106,7 @@ also not sure if this circular property of hue would screw up the gradient
 decent&mdash;I decided to avoid it. Also YUV's conversion formula to and from
 RGB is just a matrix multiplication, HSV is more complex.
 
-<img src="201601_colorize/hypercolumn-classification.png">
+<img src="colorize/hypercolumn-classification.png">
 
 What to use for the question mark operation? The simplest thing to do would use
 a 1x1 convolution from 963 channels to 2 channels. That is, multiply each
@@ -156,7 +156,7 @@ I experiemented with many different architectures for transforming the
 hypercolumns into UV channels. The one I will compare here is two hidden layers
 with depth at 128 and 64, 3x3 stride 1 convolutions between them.
 
-<img src="201601_colorize/hypercolumn-128-64-3-2.png"/>
+<img src="colorize/hypercolumn-128-64-3-2.png"/>
 
 This model might have enough complexity to learn the colors in ImageNet. But I
 never spent enough time to train it fully because I found a better setup. I
@@ -180,13 +180,13 @@ classificaiton entry</a> for ILSVRC 2015 in which they add residual connections
 skipping over every two layers. I used residual connections to add in
 information as it works its way down the VGG16.
 
-<img src="201601_colorize/residual_encoder.png"/>
+<img src="colorize/residual_encoder.png"/>
 
 This model uses much less memory. I was able to run it at 6 images per batch.
 Here is a comparison of training this new residual encoder model and the
 original hypercolumn model.
 
-<img src="201601_colorize/hypercolumns_vs_residual_encoder.png"/>
+<img src="colorize/hypercolumns_vs_residual_encoder.png"/>
 
 ## Residual Encoder vs Reddit
 
@@ -209,7 +209,7 @@ auto-colorization using the residual encoder model (after
 <br>
 manual colorization from Reddit
 
-<img src="201601_colorize/reddit1/full.jpg">
+<img src="colorize/reddit1/full.jpg">
 
 The model did poorly here. There are slight tints of blue in the sky&mdash;but
 other than that we get only a sepia tone. More training will probably color the
@@ -218,7 +218,7 @@ hue.
 (<a href="https://www.reddit.com/r/Colorization/comments/3zunit/denver_mining_exchange_building_mid_1880s">reddit
 post</a>)
 
-<img src="201601_colorize/reddit2/full.jpg">
+<img src="colorize/reddit2/full.jpg">
 
 Decent colorization! It got the skin tone correct, didn't color his white
 clothes, and added some green to the background. It didn't add the correct tone
@@ -227,7 +227,7 @@ colorized version pop.
 (<a href="http://www.reddit.com/r/Colorization/comments/3zrp7d/i_colorized_the_ken_westerfield_photo_from/">reddit
 post</a>)
 
-<img src="201601_colorize/reddit3/full2.jpg">
+<img src="colorize/reddit3/full2.jpg">
 
 The sky is only slightly blue and it missed coloring his chest. Also colored his
 shirt green, perhaps because the wool has a plant like texture and is towards
@@ -235,7 +235,7 @@ the bottom of the picture. Otherwise quite good.
 (<a href="https://www.reddit.com/r/Colorization/comments/1vron5/son_of_a_woodcutter_eden_mills_vermont_1936/">reddit
 post</a>)
 
-<img src="201601_colorize/reddit4/full.png">
+<img src="colorize/reddit4/full.png">
 
 This is Anne Frank in 1939. The model is unable to color cushions because
 cushions could be any color. Even if the training set is full of cushions (which
@@ -245,7 +245,7 @@ color and even if they're wrong, it will look better than no color.
 (<a href="https://www.reddit.com/r/OldSchoolCool/comments/2twf3m/">reddit
 post</a>)
 
-<img src="201601_colorize/reddit5/full.png">
+<img src="colorize/reddit5/full.png">
 
 Another bad colorization. The color of the car is lost information. The person
 who colored this photo just guessed it was red, but it might as well have been
@@ -257,13 +257,13 @@ post</a>)
 ## Other Observations
 
 <div class="list">
-<img src="201601_colorize/best/10.jpg">
-<img src="201601_colorize/best/11.jpg">
+<img src="colorize/best/10.jpg">
+<img src="colorize/best/11.jpg">
 </div>
 
 It likes to color black animals brown?
 
-<img src="201601_colorize/best/12.jpg">
+<img src="colorize/best/12.jpg">
 
 It likes to color grass green.
 
