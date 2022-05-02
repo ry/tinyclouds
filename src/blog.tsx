@@ -95,7 +95,7 @@ export default async function blog(url: string, settings?: BlogSettings) {
   });
 }
 
-async function configureBlog(
+export async function configureBlog(
   isDev: boolean,
   url: string,
   maybeSetting?: BlogSettings,
@@ -106,6 +106,7 @@ async function configureBlog(
     const blogPath = fromFileUrl(url);
     blogDirectory = dirname(blogPath);
   } catch (e) {
+    console.log(e);
     throw new Error("Cannot run blog from a remote URL.");
   }
 
@@ -197,7 +198,7 @@ async function loadPost(path: string) {
   console.log("Load: ", post.pathname);
 }
 
-async function handler(req: Request, blogSettings: BlogSettings) {
+export async function handler(req: Request, blogSettings: BlogSettings) {
   const { pathname } = new URL(req.url);
   if (pathname == "/static/gfm.css") {
     return new Response(gfm.CSS, {
@@ -370,10 +371,8 @@ function Post(
 }
 
 function PrettyDate({ date }: { date: Date }) {
-  const formatted = date.toISOString().split('T')[0];
-  return (
-    <time datetime={date.toISOString()}>{formatted}</time>
-  );
+  const formatted = date.toISOString().split("T")[0];
+  return <time datetime={date.toISOString()}>{formatted}</time>;
 }
 
 function RssFeedIcon() {
