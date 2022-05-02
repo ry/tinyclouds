@@ -12,6 +12,7 @@ import { serve } from "https://deno.land/std@0.137.0/http/mod.ts";
 
 import { h, Helmet, ssr } from "https://crux.land/nanossr@0.0.4";
 import * as gfm from "https://deno.land/x/gfm@0.1.20/mod.ts";
+import "https://esm.sh/prismjs@1.27.0/components/prism-c?no-check";
 import { parse as frontMatter } from "https://deno.land/x/frontmatter@v0.1.4/mod.ts";
 import { createReporter } from "https://deno.land/x/g_a@0.1.2/mod.ts";
 import type { Reporter as GaReporter } from "https://deno.land/x/g_a@0.1.2/mod.ts";
