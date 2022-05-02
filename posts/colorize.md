@@ -1,6 +1,6 @@
 ---
 title: Automatic Colorization
-publish_date: 2016-01
+publish_date: 2016-01-08
 ---
 
 Have you seen Reddit's

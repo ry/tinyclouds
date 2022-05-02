@@ -1,6 +1,6 @@
 ---
 title: I hate almost all software
-publish_date: October 2011
+publish_date: 2011-09-29
 ---
 
 It's unnecessary and complicated at almost every layer. At best I can
