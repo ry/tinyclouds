@@ -67,49 +67,11 @@ const POSTS = new Map<string, Post>();
  * ```
  */
 export default async function blog(url: string, settings?: BlogSettings) {
-  const dirUrl = dirname(url);
-  const postsDirPath = join(fromFileUrl(dirUrl), "posts");
-  const cwd = Deno.cwd();
+  const blogSettings = await configureBlog(IS_DEV, url, settings);
+
   let gaReporter: undefined | GaReporter;
-
-  let blogSettings: BlogSettings = {
-    title: "Blog",
-  };
-
-  if (settings) {
-    blogSettings = {
-      ...blogSettings,
-      ...settings,
-    };
-
-    if (blogSettings.gaKey) {
-      gaReporter = createReporter({ id: blogSettings.gaKey });
-    }
-
-    if (settings.header) {
-      const { content } = frontMatter(settings.header) as {
-        content: string;
-      };
-
-      blogSettings.header = content;
-    }
-  }
-
-  // TODO(bartlomieju): this loading logic could be handled by a single helper
-  // function
-  // Read posts from the current directory and store them in memory.
-  // TODO(@satyarohith): not efficient for large number of posts.
-  for await (
-    const entry of walk(postsDirPath)
-  ) {
-    if (entry.isFile && entry.path.endsWith(".md")) {
-      await loadPost(entry.path);
-    }
-  }
-  // FIXME(bartlomieju): seems like using `cwd` is wrong here, since `url` arg
-  // to `blog` might be a remote URL
-  if (IS_DEV) {
-    watchForChanges(cwd).catch(() => {});
+  if (blogSettings.gaKey) {
+    gaReporter = createReporter({ id: blogSettings.gaKey });
   }
 
   serve(async (req: Request, connInfo) => {
@@ -133,9 +95,65 @@ export default async function blog(url: string, settings?: BlogSettings) {
   });
 }
 
+async function configureBlog(
+  isDev: boolean,
+  url: string,
+  maybeSetting?: BlogSettings,
+): Promise<BlogSettings> {
+  let blogDirectory;
+
+  try {
+    const blogPath = fromFileUrl(url);
+    blogDirectory = dirname(blogPath);
+  } catch (e) {
+    throw new Error("Cannot run blog from a remote URL.");
+  }
+
+  let blogSettings: BlogSettings = {
+    title: "Blog",
+  };
+
+  if (maybeSetting) {
+    blogSettings = {
+      ...blogSettings,
+      ...maybeSetting,
+    };
+
+    if (maybeSetting.header) {
+      const { content } = frontMatter(maybeSetting.header) as {
+        content: string;
+      };
+
+      blogSettings.header = content;
+    }
+  }
+
+  await loadContent(blogDirectory, isDev);
+
+  return blogSettings;
+}
+
+async function loadContent(blogDirectory: string, isDev: boolean) {
+  // Read posts from the current directory and store them in memory.
+  const postsDirectory = join(blogDirectory, "posts");
+
+  // TODO(@satyarohith): not efficient for large number of posts.
+  for await (
+    const entry of walk(postsDirectory)
+  ) {
+    if (entry.isFile && entry.path.endsWith(".md")) {
+      await loadPost(entry.path);
+    }
+  }
+
+  if (isDev) {
+    watchForChanges(blogDirectory).catch(() => {});
+  }
+}
+
 // Watcher watches for .md file changes and updates the posts.
-async function watchForChanges(cwd: string) {
-  const watcher = Deno.watchFs(cwd);
+async function watchForChanges(path: string) {
+  const watcher = Deno.watchFs(path);
   for await (const event of watcher) {
     if (event.kind === "modify" || event.kind === "create") {
       for (const path of event.paths) {
