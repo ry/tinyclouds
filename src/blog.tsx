@@ -253,6 +253,9 @@ export function Index(
       <Helmet>
         <title>{settings.title}</title>
         <link rel="stylesheet" href="/static/gfm.css" />
+        <style type="text/css">
+          {` .markdown-body { --color-canvas-default: transparent; } `}
+        </style>
         {settings.style && <style>{settings.style}</style>}
         {hmr && <script src="/hmr.js"></script>}
       </Helmet>
