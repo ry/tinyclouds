@@ -17,6 +17,9 @@ blog(import.meta.url, {
   subtitle: "Subtitle",
   header:
     `A header that will be visible on the index page. You can use *Markdown* here.`,
+  style: `body {
+  background-color: #f0f0f0;
+}`,
   gaKey: "GA-ANALYTICS-KEY",
 });
 ```
@@ -37,5 +40,3 @@ Running in production
 ```
 deno run -A --no-check main.js
 ```
-
-To provide a custom stylesheet, add `style.css` file in the root directory.

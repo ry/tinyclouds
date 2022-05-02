@@ -6,5 +6,12 @@ blog(import.meta.url, {
   header: `![](http://tinyclouds.org/ry.jpg)
 
 ry@tinyclouds.org`,
+  style: `body {
+    background-color: #f0f0f0;
+}
+
+.markdown-body {
+    background-color: #f0f0f0;
+}`,
   gaKey: "UA-91675022-1",
 });
