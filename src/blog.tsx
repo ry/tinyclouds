@@ -229,8 +229,16 @@ async function handler(req: Request, blogSettings: BlogSettings) {
     return ssr(() => <Post post={post} hmr={IS_DEV} settings={blogSettings} />);
   }
 
-  // Fallback to serving static files, this will handle 404s as well.
-  return serveDir(req);
+  // Try to serve static files from the posts/ directory first.
+  const response = await serveDir(req, { fsRoot: "./posts/" });
+
+  // Fallback to serving static files from the root, this will handle 404s
+  // as well.
+  if (response.status == 404) {
+    return serveDir(req);
+  }
+
+  return response;
 }
 
 export function Index(
