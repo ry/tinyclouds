@@ -1,3 +1,7 @@
 body {
-    background-color: gray;
+    background-color: #cccccc;
+}
+
+.markdown-body {
+    background-color: #cccccc;
 }
