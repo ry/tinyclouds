@@ -27,4 +27,6 @@ jobs:
         run: |
           deno cache --no-check=remote main.js
 
-      # TODO(@satyarohith): run tests.
+      - name: Tests
+        run: |
+          deno task test
