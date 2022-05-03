@@ -143,23 +143,23 @@ async function loadContent(blogDirectory: string, isDev: boolean) {
     const entry of walk(postsDirectory)
   ) {
     if (entry.isFile && entry.path.endsWith(".md")) {
-      await loadPost(entry.path);
+      await loadPost(postsDirectory, entry.path);
     }
   }
 
   if (isDev) {
-    watchForChanges(blogDirectory).catch(() => {});
+    watchForChanges(postsDirectory).catch(() => {});
   }
 }
 
 // Watcher watches for .md file changes and updates the posts.
-async function watchForChanges(path: string) {
-  const watcher = Deno.watchFs(path);
+async function watchForChanges(postsDirectory: string) {
+  const watcher = Deno.watchFs(postsDirectory);
   for await (const event of watcher) {
     if (event.kind === "modify" || event.kind === "create") {
       for (const path of event.paths) {
         if (path.endsWith(".md")) {
-          await loadPost(path);
+          await loadPost(postsDirectory, path);
           HMR_SOCKETS.forEach((socket) => {
             socket.send("refresh");
           });
@@ -169,13 +169,12 @@ async function watchForChanges(path: string) {
   }
 }
 
-async function loadPost(path: string) {
+async function loadPost(postsDirectory: string, path: string) {
   const contents = await Deno.readTextFile(path);
-  let pathname = "/" + relative(Deno.cwd(), path);
+  let pathname = "/" + relative(postsDirectory, path);
   // Remove .md extension.
   pathname = pathname.slice(0, -3);
-  // Remove /posts prefix.
-  pathname = pathname.slice(6);
+
   const { content, data } = frontMatter(contents) as {
     data: Record<string, string>;
     content: string;

@@ -24,12 +24,9 @@ Deno.test("index page", async () => {
   assertEquals(resp.headers.get("content-type"), "text/html");
   const body = await resp.text();
   assertStringIncludes(body, `<html lang="en">`);
-  assertStringIncludes(body, "test.js");
-  assertStringIncludes(body, "<p>Hello!</p>");
-  assertStringIncludes(body, "<p>Viewing JIT render.</p>");
-  assertStringIncludes(body, `>[{"message":"Hello!"}]</script>`);
-  assertStringIncludes(
-    body,
-    `<meta name="description" content="Hello world!" />`,
-  );
+  assertStringIncludes(body, `Test blog`);
+  assertStringIncludes(body, `This is some subtitle`);
+  assertStringIncludes(body, `This is some header`);
+  assertStringIncludes(body, `href="/first"`);
+  assertStringIncludes(body, `href="/second"`);
 });
