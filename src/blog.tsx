@@ -6,8 +6,12 @@
 
 import { serveDir } from "https://deno.land/std@0.137.0/http/file_server.ts";
 import { walk } from "https://deno.land/std@0.137.0/fs/walk.ts";
-import { dirname, relative } from "https://deno.land/std@0.137.0/path/mod.ts";
-import { fromFileUrl, join } from "https://deno.land/std@0.137.0/path/mod.ts";
+import {
+  dirname,
+  fromFileUrl,
+  join,
+  relative,
+} from "https://deno.land/std@0.137.0/path/mod.ts";
 import { serve } from "https://deno.land/std@0.137.0/http/mod.ts";
 
 import { h, Helmet, ssr } from "https://crux.land/nanossr@0.0.4";
