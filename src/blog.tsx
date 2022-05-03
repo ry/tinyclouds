@@ -103,7 +103,7 @@ export async function configureBlog(
   isDev: boolean,
   url: string,
   maybeSetting?: BlogSettings,
-): Promise<BlogSettings> {
+): Promise<BlogSettings & { blogDirectory: string }> {
   let blogDirectory;
 
   try {
@@ -114,8 +114,9 @@ export async function configureBlog(
     throw new Error("Cannot run blog from a remote URL.");
   }
 
-  let blogSettings: BlogSettings = {
+  let blogSettings: BlogSettings & { blogDirectory: string } = {
     title: "Blog",
+    blogDirectory,
   };
 
   if (maybeSetting) {
@@ -201,7 +202,10 @@ async function loadPost(postsDirectory: string, path: string) {
   console.log("Load: ", post.pathname);
 }
 
-export async function handler(req: Request, blogSettings: BlogSettings) {
+export async function handler(
+  req: Request,
+  blogSettings: BlogSettings & { blogDirectory: string },
+) {
   const { pathname } = new URL(req.url);
   if (pathname == "/static/gfm.css") {
     return new Response(gfm.CSS, {
@@ -252,12 +256,14 @@ export async function handler(req: Request, blogSettings: BlogSettings) {
   }
 
   // Try to serve static files from the posts/ directory first.
-  const response = await serveDir(req, { fsRoot: "./posts/" });
+  const response = await serveDir(req, {
+    fsRoot: join(blogSettings.blogDirectory, "./posts"),
+  });
 
   // Fallback to serving static files from the root, this will handle 404s
   // as well.
   if (response.status == 404) {
-    return serveDir(req);
+    return serveDir(req, { fsRoot: blogSettings.blogDirectory });
   }
 
   return response;

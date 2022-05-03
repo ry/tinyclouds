@@ -30,3 +30,69 @@ Deno.test("index page", async () => {
   assertStringIncludes(body, `href="/first"`);
   assertStringIncludes(body, `href="/second"`);
 });
+
+Deno.test("posts/ first", async () => {
+  const resp = await handler(
+    new Request("https://blog.deno.dev/first"),
+    BLOG_SETTINGS,
+  );
+  assert(resp);
+  assertEquals(resp.status, 200);
+  assertEquals(resp.headers.get("content-type"), "text/html");
+  const body = await resp.text();
+  assertStringIncludes(body, `<html lang="en">`);
+  assertStringIncludes(body, `First post`);
+  assertStringIncludes(body, `2022-03-20`);
+  assertStringIncludes(body, `<img src="first/hello.png" />`);
+  assertStringIncludes(body, `<p>Lorem Ipsum is simply dummy text`);
+});
+
+Deno.test("posts/ second", async () => {
+  const resp = await handler(
+    new Request("https://blog.deno.dev/second"),
+    BLOG_SETTINGS,
+  );
+  assert(resp);
+  assertEquals(resp.status, 200);
+  assertEquals(resp.headers.get("content-type"), "text/html");
+  const body = await resp.text();
+  assertStringIncludes(body, `<html lang="en">`);
+  assertStringIncludes(body, `Second post`);
+  assertStringIncludes(body, `2022-05-02`);
+  assertStringIncludes(body, `<img src="second/hello2.png" />`);
+  assertStringIncludes(body, `<p>Lorem Ipsum is simply dummy text`);
+});
+
+Deno.test("static files in posts/ directory", async () => {
+  {
+    const resp = await handler(
+      new Request("https://blog.deno.dev/first/hello.png"),
+      BLOG_SETTINGS,
+    );
+    assert(resp);
+    assertEquals(resp.status, 200);
+    assertEquals(resp.headers.get("content-type"), "image/png");
+    await resp.arrayBuffer();
+  }
+  {
+    const resp = await handler(
+      new Request("https://blog.deno.dev/second/hello2.png"),
+      BLOG_SETTINGS,
+    );
+    assert(resp);
+    assertEquals(resp.status, 200);
+    assertEquals(resp.headers.get("content-type"), "image/png");
+    await resp.arrayBuffer();
+  }
+});
+
+Deno.test("static files in root directory", async () => {
+  const resp = await handler(
+    new Request("https://blog.deno.dev/cat.png"),
+    BLOG_SETTINGS,
+  );
+  assert(resp);
+  assertEquals(resp.status, 200);
+  assertEquals(resp.headers.get("content-type"), "image/png");
+  await resp.arrayBuffer();
+});
