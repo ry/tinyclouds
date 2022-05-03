@@ -4,15 +4,17 @@ import {
   assertEquals,
   assertStringIncludes,
 } from "https://deno.land/std@0.137.0/testing/asserts.ts";
+import { fromFileUrl, join } from "https://deno.land/std@0.137.0/path/mod.ts";
 
-const BLOG_URL = new URL("./testdata/main.js", import.meta.url);
+const BLOG_URL = new URL("./testdata/main.js", import.meta.url).href;
+const TESTDATA_PATH = fromFileUrl(new URL("./testdata/", import.meta.url));
 const SETTINGS = {
   title: "Test blog",
   subtitle: "This is some subtitle",
   header: "This is some header",
   style: `body { background-color: #f0f0f0; }`,
 };
-const BLOG_SETTINGS = await configureBlog(false, BLOG_URL.href, SETTINGS);
+const BLOG_SETTINGS = await configureBlog(false, BLOG_URL, SETTINGS);
 
 Deno.test("index page", async () => {
   const resp = await handler(
@@ -72,7 +74,13 @@ Deno.test("static files in posts/ directory", async () => {
     assert(resp);
     assertEquals(resp.status, 200);
     assertEquals(resp.headers.get("content-type"), "image/png");
-    await resp.arrayBuffer();
+    const bytes = new Uint8Array(await resp.arrayBuffer());
+    assertEquals(
+      bytes,
+      await Deno.readFile(
+        join(TESTDATA_PATH, "./posts/first/hello.png"),
+      ),
+    );
   }
   {
     const resp = await handler(
@@ -82,7 +90,16 @@ Deno.test("static files in posts/ directory", async () => {
     assert(resp);
     assertEquals(resp.status, 200);
     assertEquals(resp.headers.get("content-type"), "image/png");
-    await resp.arrayBuffer();
+    const bytes = new Uint8Array(await resp.arrayBuffer());
+    assertEquals(
+      bytes,
+      await Deno.readFile(
+        join(
+          TESTDATA_PATH,
+          "./posts/second/hello2.png",
+        ),
+      ),
+    );
   }
 });
 
@@ -94,5 +111,11 @@ Deno.test("static files in root directory", async () => {
   assert(resp);
   assertEquals(resp.status, 200);
   assertEquals(resp.headers.get("content-type"), "image/png");
-  await resp.arrayBuffer();
+  const bytes = new Uint8Array(await resp.arrayBuffer());
+  assertEquals(
+    bytes,
+    await Deno.readFile(
+      join(TESTDATA_PATH, "./cat.png"),
+    ),
+  );
 });
