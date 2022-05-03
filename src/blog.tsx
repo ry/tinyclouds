@@ -342,11 +342,6 @@ function Post(
   return (
     <div class="min-h-screen">
       <Helmet>
-        {post.background && (
-          <style type="text/css">
-            {` body { background: ${post.background}; } `}
-          </style>
-        )}
         <style type="text/css">
           {` .markdown-body { --color-canvas-default: transparent; } `}
         </style>
@@ -356,6 +351,11 @@ function Post(
         <meta property="og:title" content={post.title} />
         {post.snippet && <meta name="description" content={post.snippet} />}
         {hmr && <script src="/hmr.js"></script>}
+        {post.background && (
+          <style type="text/css">
+            {` body { background: ${post.background}; } `}
+          </style>
+        )}
       </Helmet>
       {post.coverHtml && (
         <div dangerouslySetInnerHTML={{ __html: post.coverHtml }} />
