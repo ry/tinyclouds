@@ -9,10 +9,10 @@ Windows. The result of the port was the library
 unified interface for asynchronous networking on the three big operating
 systems: Linux, OSX, and Windows.
 
-## IOCP
-
 This document assumes you are familiar with how non-blocking socket I/O is done
 in Unix.
+
+## IOCP
 
 The syscall
 [`select` is available in Windows](http://msdn.microsoft.com/en-us/library/ms740141(v=VS.85).aspx)
