@@ -97,7 +97,7 @@ This higher level container is yet to be standardized. We don’t quite know how
 all this will pan out. For the moment Cloudflare Workers and
 [Deno Deploy](https://deno.com/deploy) use the
 [FetchEvent](https://developers.cloudflare.com/workers/runtime-apis/fetch-event/)
-a
+API:
 
 ```js
 addEventListener("fetch", (event) => {
