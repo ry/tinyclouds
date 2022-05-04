@@ -8,6 +8,6 @@ ry@tinyclouds.org`;
 blog(import.meta.url, {
   title: "Ryan Dahl",
   header,
-  style: `body { background-color: #f0f0f0; }`,
+  style: `body { padding: 32px; background-color: #f0f0f0; }`,
   gaKey: "UA-91675022-1",
 });
