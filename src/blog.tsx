@@ -349,14 +349,10 @@ export function Index(
 
 function PostCard({ post }: { post: Post }) {
   return (
-    <div class="py-8 border(t gray-200) grid sm:grid-cols-3 gap-2">
-      <div class="w-56 text-gray-500">
-        <p>
-          <PrettyDate date={post.publishDate} />
-        </p>
-      </div>
-      <a class="sm:col-span-2" href={post.pathname}>
-        <h3 class="text(2xl gray-900) font-bold">
+    <div class="py-8">
+      <PrettyDate date={post.publishDate} />
+      <a class="" href={post.pathname}>
+        <h3 class="text-2xl font-bold text-blue-500 hover:text-blue-600 hover:underline">
           {post.title}
         </h3>
         <div class="mt-4 text-gray-900">
