@@ -13,5 +13,6 @@ blog(import.meta.url, {
   gaKey: "UA-91675022-1",
   redirectMap: {
     "iocp-links.html": "iocp_links",
+    "rant.html": "rant",
   },
 });
