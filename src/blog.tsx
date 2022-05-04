@@ -255,6 +255,19 @@ export async function handler(
     return ssr(() => <Post post={post} hmr={IS_DEV} settings={blogSettings} />);
   }
 
+  if (pathname.endsWith("/")) {
+    const newPathname = pathname.slice(0, pathname.length - 1);
+    const post = POSTS.get(newPathname);
+    if (post) {
+      return new Response(null, {
+        status: 301,
+        headers: {
+          "location": newPathname,
+        },
+      });
+    }
+  }
+
   // Try to serve static files from the posts/ directory first.
   const response = await serveDir(req, {
     fsRoot: join(blogSettings.blogDirectory, "./posts"),
