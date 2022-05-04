@@ -25,6 +25,7 @@ import type { Item as FeedItem } from "https://esm.sh/feed@4.2.2?pin=v57";
 
 export interface BlogSettings {
   title?: string;
+  author?: string;
   subtitle?: string;
   header?: string;
   style?: string;
@@ -395,6 +396,7 @@ function Post(
         </h1>
         <div class="mt-8 text-gray-500">
           <p class="flex gap-2 items-center">
+            {settings.author}
             <PrettyDate date={post.publishDate} />
             <RssFeedIcon />
           </p>

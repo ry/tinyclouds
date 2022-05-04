@@ -9,6 +9,7 @@ import { fromFileUrl, join } from "https://deno.land/std@0.137.0/path/mod.ts";
 const BLOG_URL = new URL("./testdata/main.js", import.meta.url).href;
 const TESTDATA_PATH = fromFileUrl(new URL("./testdata/", import.meta.url));
 const SETTINGS = {
+  author: "The author",
   title: "Test blog",
   subtitle: "This is some subtitle",
   header: "This is some header",
@@ -50,6 +51,7 @@ Deno.test("posts/ first", async () => {
   const body = await resp.text();
   assertStringIncludes(body, `<html lang="en">`);
   assertStringIncludes(body, `First post`);
+  assertStringIncludes(body, `The author`);
   assertStringIncludes(body, `2022-03-20`);
   assertStringIncludes(body, `<img src="first/hello.png" />`);
   assertStringIncludes(body, `<p>Lorem Ipsum is simply dummy text`);
@@ -66,6 +68,7 @@ Deno.test("posts/ second", async () => {
   const body = await resp.text();
   assertStringIncludes(body, `<html lang="en">`);
   assertStringIncludes(body, `Second post`);
+  assertStringIncludes(body, `The author`);
   assertStringIncludes(body, `2022-05-02`);
   assertStringIncludes(body, `<img src="second/hello2.png" />`);
   assertStringIncludes(body, `<p>Lorem Ipsum is simply dummy text`);
