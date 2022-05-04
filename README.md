@@ -13,14 +13,18 @@ Or 7 lines of code if you want to customize it:
 ```js
 import blog from "https://deno.land/x/blog/blog.tsx";
 blog(import.meta.url, {
+  author: "Denobot",
   title: "My blog title",
   subtitle: "Subtitle",
   header:
     `A header that will be visible on the index page. You can use *Markdown* here.`,
-  style: `body {
-  background-color: #f0f0f0;
-}`,
+  style: `body { background-color: #f0f0f0; }`,
   gaKey: "GA-ANALYTICS-KEY",
+  redirectMap: {
+    "/foo": "/my_post",
+    // you can skip leading slashes too
+    "bar": "my_post2",
+  },
 });
 ```
 
