@@ -22,7 +22,7 @@ import { createReporter } from "https://deno.land/x/g_a@0.1.2/mod.ts";
 import type { Reporter as GaReporter } from "https://deno.land/x/g_a@0.1.2/mod.ts";
 import { Feed } from "https://esm.sh/feed@4.2.2?pin=v57";
 import type { Item as FeedItem } from "https://esm.sh/feed@4.2.2?pin=v57";
-
+import removeMarkdown from "https://esm.sh/remove-markdown?pin=v57";
 export interface BlogSettings {
   title?: string;
   author?: string;
@@ -191,7 +191,7 @@ async function loadPost(postsDirectory: string, path: string) {
   if (!snippet) {
     const maybeSnippet = content.split("\n\n")[0];
     if (maybeSnippet) {
-      snippet = maybeSnippet;
+      snippet = removeMarkdown(maybeSnippet);
     } else {
       snippet = "";
     }
