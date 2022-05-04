@@ -13,6 +13,11 @@ const SETTINGS = {
   subtitle: "This is some subtitle",
   header: "This is some header",
   style: `body { background-color: #f0f0f0; }`,
+  redirectMap: {
+    "/to_second": "second",
+    "/to_second_with_slash": "/second",
+    "second.html": "second",
+  },
 };
 const BLOG_SETTINGS = await configureBlog(false, BLOG_URL, SETTINGS);
 
@@ -75,6 +80,39 @@ Deno.test("posts/ trailing slash redirects", async () => {
   assertEquals(resp.status, 301);
   assertEquals(resp.headers.get("location"), "/second");
   await resp.text();
+});
+
+Deno.test("redirect map", async () => {
+  {
+    const resp = await handler(
+      new Request("https://blog.deno.dev/second.html"),
+      BLOG_SETTINGS,
+    );
+    assert(resp);
+    assertEquals(resp.status, 301);
+    assertEquals(resp.headers.get("location"), "/second");
+    await resp.text();
+  }
+  {
+    const resp = await handler(
+      new Request("https://blog.deno.dev/to_second"),
+      BLOG_SETTINGS,
+    );
+    assert(resp);
+    assertEquals(resp.status, 301);
+    assertEquals(resp.headers.get("location"), "/second");
+    await resp.text();
+  }
+  {
+    const resp = await handler(
+      new Request("https://blog.deno.dev/to_second_with_slash"),
+      BLOG_SETTINGS,
+    );
+    assert(resp);
+    assertEquals(resp.status, 301);
+    assertEquals(resp.headers.get("location"), "/second");
+    await resp.text();
+  }
 });
 
 Deno.test("static files in posts/ directory", async () => {

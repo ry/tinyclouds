@@ -10,4 +10,7 @@ blog(import.meta.url, {
   header,
   style: `body { padding: 32px; background-color: #f0f0f0; }`,
   gaKey: "UA-91675022-1",
+  redirectMap: {
+    "iocp-links.html": "iocp_links",
+  },
 });

@@ -29,6 +29,7 @@ export interface BlogSettings {
   header?: string;
   style?: string;
   gaKey?: string;
+  redirectMap?: Record<string, string>;
 }
 
 /** Represents a Post in the Blog. */
@@ -207,6 +208,29 @@ export async function handler(
   blogSettings: BlogSettings & { blogDirectory: string },
 ) {
   const { pathname } = new URL(req.url);
+
+  if (blogSettings.redirectMap) {
+    let maybeRedirect = blogSettings.redirectMap[pathname];
+
+    if (!maybeRedirect) {
+      // trim leading slash
+      maybeRedirect = blogSettings.redirectMap[pathname.slice(1)];
+    }
+
+    if (maybeRedirect) {
+      if (!maybeRedirect.startsWith("/")) {
+        maybeRedirect = "/" + maybeRedirect;
+      }
+
+      return new Response(null, {
+        status: 301,
+        headers: {
+          "location": maybeRedirect,
+        },
+      });
+    }
+  }
+
   if (pathname == "/static/gfm.css") {
     return new Response(gfm.CSS, {
       headers: {
