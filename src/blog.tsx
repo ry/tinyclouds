@@ -295,10 +295,6 @@ export function Index(
         {settings.style && <style>{settings.style}</style>}
         {hmr && <script src="/hmr.js"></script>}
       </Helmet>
-      <h1 class="text-5xl font-bold py-8">{settings.title}</h1>
-
-      {settings.subtitle && <h2 class="text-3xl">{settings.subtitle}</h2>}
-
       {headerHtml && (
         <div>
           <div class="markdown-body">
