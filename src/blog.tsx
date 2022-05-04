@@ -187,6 +187,16 @@ async function loadPost(postsDirectory: string, path: string) {
     content: string;
   };
 
+  let snippet = data.snippet;
+  if (!snippet) {
+    const maybeSnippet = content.split("\n\n")[0];
+    if (maybeSnippet) {
+      snippet = maybeSnippet;
+    } else {
+      snippet = "";
+    }
+  }
+
   const post: Post = {
     title: data.title,
     author: data.author,
@@ -194,7 +204,7 @@ async function loadPost(postsDirectory: string, path: string) {
     // pathname in front matter.
     pathname: data.pathname ?? pathname,
     publishDate: new Date(data.publish_date),
-    snippet: data.snippet ?? "",
+    snippet,
     markdown: content,
     coverHtml: data.cover_html,
     background: data.background,
@@ -380,6 +390,9 @@ function Post(
         {settings.style && <style>{settings.style}</style>}
         <meta property="og:title" content={post.title} />
         {post.snippet && <meta name="description" content={post.snippet} />}
+        {post.snippet && (
+          <meta property="og:description" content={post.snippet} />
+        )}
         {hmr && <script src="/hmr.js"></script>}
         {post.background && (
           <style type="text/css">
@@ -387,6 +400,9 @@ function Post(
           </style>
         )}
       </Helmet>
+      <article class="max-w-screen-sm px-4 mx-auto">
+        <a href="/" class="hover:text-gray-700" title="Index">← Index</a>
+      </article>
       {post.coverHtml && (
         <div dangerouslySetInnerHTML={{ __html: post.coverHtml }} />
       )}
@@ -396,10 +412,10 @@ function Post(
         </h1>
         <div class="mt-8 text-gray-500">
           <p class="flex gap-2 items-center">
-            {settings.author}
             <PrettyDate date={post.publishDate} />
             <RssFeedIcon />
           </p>
+          {settings.author && <p>{settings.author}</p>}
         </div>
         <hr class="my-8" />
         <div class="markdown-body">
