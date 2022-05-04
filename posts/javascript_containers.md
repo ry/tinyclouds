@@ -87,9 +87,9 @@ wouldn’t write image resizing code in bash, you’d spawn imagemagick.
 The future of scripting languages is browser JavaScript. The fundamental mistake
 of Node.js was diverging from the browser as new APIs were standardized,
 inventing too much. In 2010, we didn’t have ES modules, but once it was
-standardized it should be been brought into Node. The same can be said for
+standardized it should have been brought into Node. The same can be said for
 promises, async/await, fetch, streams, and more. Antiquated non-standard bits
-like CommonJS require, package.json, node_modules, NPM, the global `process`
+like CommonJS require, package.json, `node_modules`, NPM, the global `process`
 object will ultimately either be standardized and added to the browser or
 supplanted by web-aligned replacements.
 
