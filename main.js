@@ -1,7 +1,7 @@
 //import blog from "https://deno.land/x/blog/blog.tsx";
 import blog from "./src/blog.tsx";
 
-const header = `![](http://tinyclouds.org/ry.jpg)
+const header = `![](/ry.jpg)
 # Ryan Dahl
 ry@tinyclouds.org`;
 
