@@ -191,7 +191,7 @@ async function loadPost(postsDirectory: string, path: string) {
   if (!snippet) {
     const maybeSnippet = content.split("\n\n")[0];
     if (maybeSnippet) {
-      snippet = removeMarkdown(maybeSnippet);
+      snippet = removeMarkdown(maybeSnippet.replace("\n", ""));
     } else {
       snippet = "";
     }
