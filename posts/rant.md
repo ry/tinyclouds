@@ -13,21 +13,20 @@ In the past year I think I have finally come to understand the ideals of Unix:
 file descriptors and processes orchestrated with C. It's a beautiful idea. This
 is not however what we interact with. The complexity was not contained. Instead
 I deal with DBus and /usr/lib and Boost and ioctls and SMF and signals and
-volatile variables and prototypal inheritance and
-<code> _C99_FEATURES_</code> and dpkg and autoconf.
+volatile variables and prototypal inheritance and `_C99_FEATURES_` and dpkg and
+autoconf.
 
 Those of us who build on top of these systems are adding to the complexity. Not
-only do you have to understand
-<code>$LD_LIBRARY_PATH</code> to make your system work but now you have to
-understand <code>$NODE_PATH</code> too - there's my little addition to the
+only do you have to understand `$LD_LIBRARY_PATH` to make your system work but
+now you have to understand `$NODE_PATH` too - there's my little addition to the
 complexity you must now know! The users - the one who just want to see a
-webpage - don't care. They don't care how we organize
-<code>/usr</code>, they don't care about zombie processes, they don't care about
-bash tab completion, they don't care if zlib is dynamically linked or statically
-linked to Node. There will come a point where the accumulated complexity of our
-existing systems is greater than the complexity of creating a new one. When that
-happens all of this shit will be trashed. We can flush boost and glib and
-autoconf down the toilet and never think of them again.
+webpage - don't care. They don't care how we organize `/usr`, they don't care
+about zombie processes, they don't care about bash tab completion, they don't
+care if zlib is dynamically linked or statically linked to Node. There will come
+a point where the accumulated complexity of our existing systems is greater than
+the complexity of creating a new one. When that happens all of this shit will be
+trashed. We can flush boost and glib and autoconf down the toilet and never
+think of them again.
 
 Those of you who still find it enjoyable to learn the details of, say, a
 programming language - being able to happily recite off if NaN equals or does
