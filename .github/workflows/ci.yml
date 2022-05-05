@@ -16,17 +16,13 @@ jobs:
         uses: denoland/setup-deno@v1
 
       - name: Check formatting
-        run: |
-          deno fmt --check
+        run: deno fmt --check
 
       - name: Lint
-        run: |
-          deno lint
+        run: deno lint
 
       - name: Typecheck
-        run: |
-          deno cache --no-check=remote main.js
+        run: deno check main.js
 
       - name: Tests
-        run: |
-          deno task test
+        run: deno task test
