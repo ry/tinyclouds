@@ -123,3 +123,5 @@ JavaScript containers, rather than Linux containers.
 At [Deno](https://deno.com/) we are exploring these ideas; we’re trying to
 radically simplify the server abstraction. [We’re hiring](https://deno.com/jobs)
 if this sounds interesting to you.
+
+[HN comments](https://news.ycombinator.com/item?id=31262542)
