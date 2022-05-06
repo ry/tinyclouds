@@ -172,3 +172,22 @@ Deno.test("static files in root directory", async () => {
     ),
   );
 });
+
+Deno.test("RSS feed", async () => {
+  const resp = await handler(
+    new Request("https://blog.deno.dev/feed"),
+    BLOG_SETTINGS,
+  );
+  assert(resp);
+  assertEquals(resp.status, 200);
+  assertEquals(
+    resp.headers.get("content-type"),
+    "application/atom+xml; charset=utf-8",
+  );
+  const body = await resp.text();
+  assertStringIncludes(body, `<title>Test blog</title>`);
+  assertStringIncludes(body, `First post`);
+  assertStringIncludes(body, `https://blog.deno.dev/first`);
+  assertStringIncludes(body, `Second post`);
+  assertStringIncludes(body, `https://blog.deno.dev/second`);
+});

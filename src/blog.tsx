@@ -478,7 +478,7 @@ function serveRSS(
       title: post.title,
       description: post.snippet,
       date: post.publishDate,
-      link: `${origin}/${post.pathname}`,
+      link: `${origin}${post.pathname}`,
       author: post.author?.split(",").map((author: string) => ({
         name: author.trim(),
       })),
