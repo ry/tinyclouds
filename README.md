@@ -8,7 +8,30 @@ import blog from "https://deno.land/x/blog/blog.tsx";
 blog(import.meta.url);
 ```
 
-Or 7 lines of code if you want to customize it:
+## Getting started
+
+To initialize your own blog you can run following script:
+
+```shellsession
+$ deno run https://deno.land/x/blog/init.ts ./directory/for/blog/
+```
+
+_This command will setup a blog with a "Hello world" post so you can start
+writing right away._
+
+Start local server with live reload:
+
+```shellsession
+$ deno task dev
+```
+
+To ensure the best development experience, make sure to follow
+[Set up your environment](https://deno.land/manual/getting_started/setup_your_environment)
+from the Deno Manual.
+
+## Configuration
+
+You can customize your blog as follows:
 
 ```js
 import blog from "https://deno.land/x/blog/blog.tsx";
@@ -28,19 +51,16 @@ blog(import.meta.url, {
 });
 ```
 
-Currently this is both Ryan's personal blog posts combined with the blog
-framework itself (in the `src/` directory). This is just for quick initial
-iteration. Eventually we'll want to split the blog framework from the personal
-blog posts.
+## Hosting with Deno Deploy
 
-To get started:
+<TODO>
 
-```
-deno run -A --no-check=remote --watch main.js --dev
+## Self hosting
+
+You can also self-host the blog, in such case run:
+
+```shellsession
+$ deno task serve
 ```
 
-Running in production
-
-```
-deno run -A --no-check main.js
-```
+TODO(bartlomieju): allow specyfing port and hostname?
