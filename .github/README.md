@@ -1,3 +1,3 @@
 # Ryan's Blog
 
-![](posts/screenshot.png)
+![](../posts/screenshot.png)
