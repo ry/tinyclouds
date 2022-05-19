@@ -1,5 +1,4 @@
-//import blog from "https://deno.land/x/blog/blog.tsx";
-import blog from "./src/blog.tsx";
+import blog from "https://deno.land/x/blog@0.0.1/blog.tsx";
 
 const header = `![](/ry.jpg)
 # Ryan Dahl
