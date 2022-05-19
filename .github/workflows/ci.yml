@@ -23,6 +23,3 @@ jobs:
 
       - name: Typecheck
         run: deno check main.js
-
-      - name: Tests
-        run: deno task test
