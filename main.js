@@ -2,7 +2,11 @@ import blog from "https://deno.land/x/blog@0.0.1/blog.tsx";
 
 const header = `![](/ry.jpg)
 # Ryan Dahl
-ry@tinyclouds.org`;
+
+ry@tinyclouds.org
+
+No, I don't have a twitter account.
+`;
 
 blog(import.meta.url, {
   title: "Ryan Dahl",
