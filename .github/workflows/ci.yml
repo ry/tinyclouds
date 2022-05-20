@@ -8,11 +8,6 @@ on:
 jobs:
   check:
     runs-on: ubuntu-latest
-
-    permissions:
-      id-token: write
-      contents: read
-
     steps:
       - name: Clone repository
         uses: actions/checkout@v2
@@ -28,9 +23,3 @@ jobs:
 
       - name: Typecheck
         run: deno check main.js
-
-      - name: Deploy to Deno Deploy
-        uses: denoland/deployctl@v1
-        with:
-          project: tinyclouds
-          entrypoint: main.js
