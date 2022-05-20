@@ -5,8 +5,9 @@ const header = `![](/ry.jpg)
 
 ry@tinyclouds.org
 
-No, I don't have a twitter account.
-`;
+https://github.com/ry
+
+I don't have a Twitter account.`;
 
 blog(import.meta.url, {
   title: "Ryan Dahl",
