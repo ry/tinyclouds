@@ -3,11 +3,11 @@ import blog from "https://deno.land/x/blog@0.0.1/blog.tsx";
 const header = `![](/ry.jpg)
 # Ryan Dahl
 
-Email: ry@tinyclouds.org
+ry@tinyclouds.org
 
-Github: https://github.com/ry
+https://github.com/ry
 
-Linkedin: https://www.linkedin.com/in/tinyclouds/
+https://www.linkedin.com/in/tinyclouds/
 
 Twitter: none`;
 
