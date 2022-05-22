@@ -44,7 +44,7 @@ other programming languages in that it is deeply tied into this infrastructure.
 Scripting languages make a lot of sense for many server-side problems. Most of
 the code being written is not compute bound, rather it’s bound by productivity:
 the speed it can be written and the monetary cost of the developers. Scripting
-languages allow business logic to be written faster and cheaper.  The scripting
+languages allow business logic to be written faster and cheaper. The scripting
 languages (Python, Ruby, Lua, Shell, Perl, Smalltalk, JavaScript) are pretty
 similar. There are differences in syntax and APIs, but there’s little else to
 contrast them with. Anyone who has spent time in Rust or C understands how
