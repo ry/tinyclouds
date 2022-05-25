@@ -22,7 +22,7 @@ to wonder if JavaScript itself can provide a new type of self-contained server
 container.
 
 The more we can remove unnecessary abstractions, the closer we can get to the
-concept of “The Network Is the Computer”. Cloudflare Workers is essentially an
+concept of "The Network Is the Computer". Cloudflare Workers is essentially an
 implementation of this concept in the Cloudflare network. Deno Deploy is a new
 implementation of this idea (on the GCP network).
 
