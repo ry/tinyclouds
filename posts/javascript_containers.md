@@ -3,6 +3,10 @@ title: JavaScript Containers
 publish_date: 2022-05-04
 ---
 
+```js
+let a = "hello";
+```
+
 The majority of server programs are Linux programs. They consist of a file
 system, some executable files, maybe some shared libraries, they probably
 interface with system software like systemd or nsswitch.
