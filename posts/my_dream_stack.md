@@ -18,8 +18,8 @@ institutions. JavaScript will still be important in the future.
 Web Frameworks Are Constantly Improving. React components, path based routing,
 layout routes: these are all massively important innovations. Remix is a perfect
 example of the breakneck speed of innovation. Yet relatively little over the
-past decade has changed in the JavaScript runtime space. It's all still my
-software - it's all still Node.js. This will change over the next couple years.
+past decade has changed in the JavaScript runtime space. It's all still Node.js.
+This will change over the next couple years.
 
 Changes in the runtime space let us address fundemental problems in the
 JavaScript ecosystem. In this post I want to describe in the abstract what I
@@ -27,10 +27,19 @@ think an ideal workflow for JavaScript programs looks like.
 
 ## My Dream Stack
 
-Reduces boilerplate - ideally very small apps can be defined in a single file
-Uses JavaScript, the universal scripting language Async I/O and optimal HTTP
-server performance Built-in, uniform dev tools - code formatter, linter, doc
-generation, etc
+The beauty of working in a dynamic programming language like JavaScript is that
+complexity can be well abstracted into very small, easy to use high-level
+functions. Therefore my dream stack does not prevent me from making simple
+interfaces. A small app can be defined in a single file.
+
+Of course my dream stack would use JavaScript,
+[the universal scripting language](https://tinyclouds.org/javascript_containers#the-universal-scripting-language).
+
+Of course it should use Async I/O, HTTP server performance should be close to
+optimal.
+
+Async I/O and optimal HTTP server performance Built-in, uniform dev tools - code
+formatter, linter, doc generation, etc
 
 ## My dream stack extends to the cloud
 
