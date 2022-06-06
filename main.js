@@ -1,6 +1,4 @@
-/** @jsx h */
-
-import blog, { ga, redirects, h } from "https://deno.land/x/blog@0.3.0/blog.tsx";
+import blog, { ga, redirects } from "https://deno.land/x/blog@0.3.0/blog.tsx";
 
 blog({
   title: "Ryan Dahl",
