@@ -1,4 +1,4 @@
-import blog, { ga, redirects } from "https://deno.land/x/blog@0.3.1/blog.tsx";
+import blog, { ga, redirects } from "https://deno.land/x/blog@0.3.0/blog.tsx";
 
 blog({
   title: "Ryan Dahl",
@@ -9,7 +9,7 @@ blog({
     { title: "GitHub", url: "https://github.com/ry" },
     { title: "LinkedIn", url: "https://www.linkedin.com/in/tinyclouds/" },
   ],
-  style: `body { padding: 32px 0; background-color: #f0f0f0; }`,
+  background: "#f9f9f9",
   middlewares: [
     ga("UA-91675022-1"),
     redirects({
