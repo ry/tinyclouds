@@ -1,9 +1,10 @@
-import blog, { ga, redirects } from "https://deno.land/x/blog@0.3.1/blog.tsx";
+import blog, { ga, redirects } from "https://deno.land/x/blog@0.3.2/blog.tsx";
 
 blog({
   title: "Ryan Dahl",
   author: "Ryan Dahl",
-  picture: "./ry.jpg",
+  cover: "./ry.jpg",
+  coverStyle: "avatar",
   links: [
     { title: "Email", url: "mailto:ry@tinyclouds.org" },
     { title: "GitHub", url: "https://github.com/ry" },
