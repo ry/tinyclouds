@@ -1,20 +1,14 @@
-import blog, { ga, redirects } from "https://deno.land/x/blog@0.1.0/blog.tsx";
-
-const header = `![](/ry.jpg)
-# Ryan Dahl
-
-ry@tinyclouds.org
-
-https://github.com/ry
-
-https://www.linkedin.com/in/tinyclouds/
-
-Twitter: none`;
+import blog, { ga, redirects } from "https://deno.land/x/blog@0.3.0/blog.tsx";
 
 blog({
   title: "Ryan Dahl",
   author: "Ryan Dahl",
-  header,
+  picture: "./ry.jpg",
+  links: [
+    { title: "Email", url: "mailto:ry@tinyclouds.org" },
+    { title: "GitHub", url: "https://github.com/ry" },
+    { title: "LinkedIn", url: "https://www.linkedin.com/in/tinyclouds/" },
+  ],
   style: `body { padding: 32px 0; background-color: #f0f0f0; }`,
   middlewares: [
     ga("UA-91675022-1"),
