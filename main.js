@@ -9,7 +9,7 @@ blog({
     { title: "Email", url: "mailto:ry@tinyclouds.org" },
     { title: "GitHub", url: "https://github.com/ry" },
   ],
-  background: "#f9f9f9",
+  background: "#fff",
   middlewares: [
     ga("UA-91675022-1"),
     redirects({
