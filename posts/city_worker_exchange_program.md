@@ -32,8 +32,8 @@ Thus this proposal for a new type of exchange program. Except instead of an
 exchange program for college students it will be instead for young city workers
 who have just completed an apprenticeship (or first couple years of training) in
 some professional field. Imagine an entry level NYC sanitation worker spending a
-year in abroad in London. Are there different processes involved in London that
-the young worker can come home with.
+year in abroad London. There different processes involved in London that the
+young worker can come home with.
 
 The goal is the simple exchange of ideas.
 
