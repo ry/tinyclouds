@@ -4,11 +4,9 @@ publish_date: 2022-08-04
 ---
 
 An international exchange program should be established for workers in local
-city services to foster the sharing of ideas. This exchange program is
-particularly important for local trades because there are few opportunities
-otherwise to share ideas specific to a local trade.
-
-## Problem
+city services to foster the sharing of ideas. There are few opportunities for
+local trades people to share ideas and techniques outside of their region; the
+goal is to fix that.
 
 My favorite part of traveling isn't seeing the historic sights but rather
 discovering differences in the daily operations of the country. In Paris, for
@@ -30,15 +28,12 @@ different than they are in NYC.
 We should be sharing the best ideas small and large. Localities have a lot of
 locked up knowledge that is difficult to share across borders.
 
-## Solution
-
-I want to propose a new type of exchange program.
-
-Except instead of college students it will be young city workers who have just
-completed an apprenticeship (or first couple years of training) in some
-professional field. Imagine an entry level NYC sanitation worker spending a year
-in abroad in London. Are there different processes involved in London that the
-young worker can come home with.
+Thus this proposal for a new type of exchange program. Except instead of an
+exchange program for college students it will be instead for young city workers
+who have just completed an apprenticeship (or first couple years of training) in
+some professional field. Imagine an entry level NYC sanitation worker spending a
+year in abroad in London. Are there different processes involved in London that
+the young worker can come home with.
 
 The goal is the simple exchange of ideas.
 
@@ -56,26 +51,22 @@ An exchange program of trades people. Nurses, sanitation workers, postal
 employees, and other trades of the like would exchange places with a counterpart
 in another country.
 
-## Related Efforts
-
 There is no need for exchange programs for programmers. All the techniques,
 software, and discussions are already available globally. The same is not
 necessarily true for trades that interact with physical reality. The more
 location dependent a trade, the more likely it is to contain non-digital local
 techniques and knowledge.
 
-
-
 Since medieval times in Europe, various crafts like carpentry and metalworking
-have [a tradition of their workers traveling to other towns or countries to learn
-the techniques of remote counterparts](https://en.wikipedia.org/wiki/Journeyman_years). This tradition has been important for the
-transmission of artistic style around Europe.
+have
+[a tradition of their workers traveling to other towns or countries to learn
+the techniques of remote counterparts](https://en.wikipedia.org/wiki/Journeyman_years).
+This tradition has been important for the transmission of artistic style around
+Europe.
 
-College students around the world participate in [exchange programs](https://en.wikipedia.org/wiki/Erasmus_Programme). Helpful in
+College students around the world participate in
+[exchange programs](https://en.wikipedia.org/wiki/Erasmus_Programme). Helpful in
 personal development and fostering better cultural understandings.
-
-
-## Conclusion
 
 An exchange program of city workers would facilitate the sharing of ideas that
 could bring improvements small and large.
