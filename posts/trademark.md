@@ -25,7 +25,7 @@ The best value Oracle could derive from the trademark would be from the goodwill
 it receives by granting it into the public domain. It’s understandable why this
 hasn’t yet happened - it would require a very forward thinking and high level
 Oracle employee to propose something so intangible. Yet it is obviously the
-right move.
+right move to trade a worthless trademark for brand goodwill.
 
 Oracle, please release the JavaScript trademark.
 
