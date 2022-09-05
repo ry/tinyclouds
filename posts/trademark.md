@@ -29,6 +29,11 @@ right move to trade a worthless trademark for brand marketing and goodwill.
 
 Oracle, please release the JavaScript trademark.
 
+<br/>
+<br/>
+
+[HN comments](https://news.ycombinator.com/item?id=32709870)
+
 [pr]: https://web.archive.org/web/20020606002913/http://wp.netscape.com/newsref/pr/newsrelease67.html
 [trademark]: https://tsdr.uspto.gov/#caseNumber=75026640&caseType=SERIAL_NO&searchType=statusSearch
 [non-use]: https://www.uspto.gov/trademarks/maintain/keeping-your-registration-alive
