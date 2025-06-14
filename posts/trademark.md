@@ -3,6 +3,8 @@ title: Dear Oracle, Please Release the JavaScript Trademark
 publish_date: 2022-09-03
 ---
 
+Foo bar
+
 [In 1995 Netscape partnered with Sun Microsystems to create interactive
 websites][pr]. Famously Brendan Eich spent only 10 days to create the first
 version of JavaScript - a dynamic programming language with a roughly syntactic
