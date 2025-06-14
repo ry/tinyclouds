@@ -12,7 +12,7 @@ the emergence of a new non-biological form of intelligent life.
 
 And yet, it doesn't feel like it.
 
-There's no cinematic score, no blinking AGI warning light. Just Slack threads, ,
+There's no cinematic score, no blinking AGI warning light. Just Slack threads,
 blog posts, and conference panels. It reminds me of witnessing childbirth -
 profoundly transformative, with some shocking moments, but also lots of mundane
 time waiting around.
@@ -30,14 +30,15 @@ misunderstanding of what AI has become.
 Machine learning - now rightly called AI - is a deeply general-purpose field.
 The same core techniques behind Midjourney and GPT share research lineage, and
 often architecture. This isn't a stack of isolated tricks. It's one evolving
-system architecture applied across language, vision, simulation, reasoning, and
+system architecture applied across language, vision, reasoning, robotics, and
 more.
 
 These systems are built on a mountain of science: decades of research, countless
 failed experiments, and thousands of contributors.
 ([I've even contributed a few failures myself.](https://tinyclouds.org/residency))
-And we haven't found the limits yet - these models can already simulate physical
-phenomena, generate high-definition video, and write deeply technical software.
+And we haven't found the limits yet - these models can already translate
+language, write poetry, generate high-definition video, and write deeply
+technical software, and so much more.
 
 Mobile technology was transformative. But general-purpose synthetic intelligence
 is something else entirely.
