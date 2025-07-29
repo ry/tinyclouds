@@ -6,7 +6,9 @@ export default function* ({ search }: { search: any }) {
   const allPages = search.pages();
   const posts = allPages
     .filter((page: any) => page.title && page.publish_date)
-    .sort((a: any, b: any) => new Date(b.publish_date).getTime() - new Date(a.publish_date).getTime());
+    .sort((a: any, b: any) =>
+      new Date(b.publish_date).getTime() - new Date(a.publish_date).getTime()
+    );
 
   const content = `
     <div class="header">
@@ -24,19 +26,22 @@ export default function* ({ search }: { search: any }) {
     </div>
     
     <ul class="post-list">
-      ${posts.map((post: any) => {
-        const formattedDate = new Date(post.publish_date).toISOString().split('T')[0];
+      ${
+    posts.map((post: any) => {
+      const formattedDate =
+        new Date(post.publish_date).toISOString().split("T")[0];
 
-        // Fix the URL to remove /posts/ prefix
-        const cleanUrl = post.url.replace('/posts/', '/');
-        
-        return `
+      // Fix the URL to remove /posts/ prefix
+      const cleanUrl = post.url.replace("/posts/", "/");
+
+      return `
           <li>
             <h2><a href="${cleanUrl}">${post.title}</a></h2>
             <div class="post-date">${formattedDate}</div>
           </li>
         `;
-      }).join('')}
+    }).join("")
+  }
     </ul>
   `;
 
@@ -44,6 +49,6 @@ export default function* ({ search }: { search: any }) {
     url: "/",
     title: "Ryan Dahl",
     layout: "layout.tsx",
-    content: content
+    content: content,
   };
 }

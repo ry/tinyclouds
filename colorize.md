@@ -71,8 +71,8 @@ First order of business was picking a pre-trained model to use.
 
 So I wanted to use a pretrained image classification model (from
 <a
-href="https://github.com/BVLC/caffe/wiki/Model-Zoo">the Caffe model zoo</a>)
-to extract features for colorization. I chose the
+href="https://github.com/BVLC/caffe/wiki/Model-Zoo">the Caffe model zoo</a>) to
+extract features for colorization. I chose the
 <a
 href="https://gist.github.com/ksimonyan/211839e770f7b538e2d8#file-readme-md">VGG-16
 model</a> because it has a simple architecure yet still competitive (second
@@ -92,11 +92,10 @@ image. Using this information I should be able to color the image.
 Rather than reconstructing the entire color RGB image, I trained models to
 produce two color channels which I concatenate with the grayscale input channel
 to produce a <a
-href="https://en.wikipedia.org/wiki/YUV">YUV image</a>. The Y
-channel is intensity. This ensures that the intensity of the output will always
-be the same as the input. (This extra complexity isn't necessary, a model could
-learn to reconstruct the image entirely, but learning only two channels helps
-debugging.)
+href="https://en.wikipedia.org/wiki/YUV">YUV image</a>. The Y channel is
+intensity. This ensures that the intensity of the output will always be the same
+as the input. (This extra complexity isn't necessary, a model could learn to
+reconstruct the image entirely, but learning only two channels helps debugging.)
 
 Originally I used Hue-Saturation-Value (HSV) color space. (As it was the only
 color space with a grayscale channel that I knew about.) The problem with HSV is

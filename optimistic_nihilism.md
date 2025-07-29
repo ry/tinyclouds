@@ -58,15 +58,15 @@ an important truth: Mars is one of the last places we could ever go.
 It's possible to send people to Mars; it might even happen in the next few
 years. By stretching one's imagination generations into the future, it's
 <a
-href="https://en.wikipedia.org/wiki/Colonization_of_Mars">maaaaybe</a>
-possible we could have largish populations of humans on Mars... But the other
-planets are utterly inhospitable. The surface of Venus is 400 degrees and the
-atmosphere is so corrosive that it eats metal. The pressure on Jupiter would
-crush spacecraft, and there's no way to escape once you go in. Its moons bask in
-extreme radiation. Pluto is a pitch black icy rock in the middle of nowhere. I
-suppose it's not physically impossible to land someone on Mercury or Ceres or
-any other number of rocky bodies, but it's doubtful there's much to be gained
-beyond flag planting.
+href="https://en.wikipedia.org/wiki/Colonization_of_Mars">maaaaybe</a> possible
+we could have largish populations of humans on Mars... But the other planets are
+utterly inhospitable. The surface of Venus is 400 degrees and the atmosphere is
+so corrosive that it eats metal. The pressure on Jupiter would crush spacecraft,
+and there's no way to escape once you go in. Its moons bask in extreme
+radiation. Pluto is a pitch black icy rock in the middle of nowhere. I suppose
+it's not physically impossible to land someone on Mercury or Ceres or any other
+number of rocky bodies, but it's doubtful there's much to be gained beyond flag
+planting.
 
 The fastest speed ever achieved by a human made object was 25 miles per second
 with the Juno spacecraft. If we somehow pack a ship with humans and supplies and
@@ -92,10 +92,9 @@ so utterly precious.
 
 We are just beginning to understand the mechanisms of the brain. The emerging
 understanding is that many <a
-href="https://en.wikipedia.org/wiki/Neuron">small
-cells</a> interact with electrical chemical pulses to process sensory
-information and react with muscle movements. Although we don't understand the
-mechanics of consciousness
+href="https://en.wikipedia.org/wiki/Neuron">small cells</a> interact with
+electrical chemical pulses to process sensory information and react with muscle
+movements. Although we don't understand the mechanics of consciousness
 (<a href="https://www.princeton.edu/~graziano/Consciousness_Research.html">maybe</a>
 it's some kind of control system for higher level
 <a href="https://arxiv.org/abs/1406.6247">attention</a>), all evidence suggests
@@ -209,6 +208,5 @@ empathetic that they avoid eating animals entirely. If a super intelligence
 could outsmart me, then it would also understand all that I've outlined above
 about how fragile and rare life is. A super intelligence would, I think, be
 super empathetic.
-
 
 <a href="https://news.ycombinator.com/item?id=16749997">HN comments</a>

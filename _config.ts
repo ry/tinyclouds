@@ -33,7 +33,9 @@ site.copy([".jpg", ".jpeg", ".png", ".pdf"]);
 // Set default layout for markdown posts (excluding index.page.ts)
 site.process([".md"], (pages) => {
   for (const page of pages) {
-    if (page.src.path !== "/index" && page.data.title && page.data.publish_date) {
+    if (
+      page.src.path !== "/index" && page.data.title && page.data.publish_date
+    ) {
       page.data.layout = "post.tsx";
     }
   }

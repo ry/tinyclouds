@@ -1,14 +1,21 @@
 export default function Layout(
-  { title, background, children }: { title?: string; background?: string; children: React.ReactNode }
+  { title, background, children }: {
+    title?: string;
+    background?: string;
+    children: React.ReactNode;
+  },
 ) {
   return (
     <html lang="en">
       <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title>{title && title !== "Ryan Dahl" ? `${title} | ` : ""}Ryan Dahl</title>
-        <script dangerouslySetInnerHTML={{
-          __html: `
+        <title>
+          {title && title !== "Ryan Dahl" ? `${title} | ` : ""}Ryan Dahl
+        </title>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
             function toggleTheme() {
               document.body.classList.toggle('dark');
               localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
@@ -19,10 +26,12 @@ export default function Layout(
                 (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
               document.body.classList.add('dark');
             }
-          `
-        }} />
-        <style dangerouslySetInnerHTML={{
-          __html: `
+          `,
+          }}
+        />
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `
             * {
               box-sizing: border-box;
             }
@@ -32,7 +41,7 @@ export default function Layout(
               line-height: 1.6;
               margin: 0;
               padding: 0;
-              background: ${background || '#fff'};
+              background: ${background || "#fff"};
               color: #333;
             }
 
@@ -269,8 +278,9 @@ export default function Layout(
               h1, .post-title { font-size: 1.875rem; }
               h2 { font-size: 1.5rem; }
             }
-          `
-        }} />
+          `,
+          }}
+        />
       </head>
       <body>
         <div class="container">
