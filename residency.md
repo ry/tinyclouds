@@ -2,6 +2,7 @@
 title: Google Brain Residency
 publish_date: 2017-06-06
 background: white
+layout: post.tsx
 ---
 
 Last year, after [nerding](http://tinyclouds.org/colorize/)

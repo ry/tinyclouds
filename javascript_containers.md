@@ -1,6 +1,7 @@
 ---
 title: JavaScript Containers
 publish_date: 2022-05-04
+layout: post.tsx
 ---
 
 The majority of server programs are Linux programs. They consist of a file

@@ -1,6 +1,7 @@
 ---
 title: Dear Oracle, Please Release the JavaScript Trademark
 publish_date: 2022-09-03
+layout: post.tsx
 ---
 
 [In 1995 Netscape partnered with Sun Microsystems to create interactive

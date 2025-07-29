@@ -1,7 +1,7 @@
 {
   "tasks": {
     "dev": "deno task lume -s",
-    "deploy-staging": "deployctl deploy --project=tinyclouds main.js",
+    "deploy": "deno deploy",
     "lume": "echo \"import 'lume/cli.ts'\" | deno run -A -",
     "build": "deno task lume",
     "serve": "deno task lume -s"
@@ -26,5 +26,9 @@
     "plugins": [
       "https://deno.land/x/lume@v3.0.5/lint.ts"
     ]
+  },
+  "deploy": {
+    "org": "ry",
+    "app": "tinyclouds"
   }
 }
