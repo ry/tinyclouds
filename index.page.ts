@@ -19,7 +19,7 @@ export default function* ({ search }: { search: any }) {
           <a href="mailto:ry@tinyclouds.org">Email</a>
           <a href="https://github.com/ry">GitHub</a>
           <a href="https://twitter.com/rough__sea">Twitter</a>
-          <a href="/feed.xml">RSS</a>
+          <a href="/feed">RSS</a>
         </div>
       <button class="theme-toggle" onclick="toggleTheme()">🌓</button>
       </div>

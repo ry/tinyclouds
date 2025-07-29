@@ -13,6 +13,12 @@ export default function Layout(
         <title>
           {title && title !== "Ryan Dahl" ? `${title} | ` : ""}Ryan Dahl
         </title>
+        <link
+          rel="alternate"
+          type="application/rss+xml"
+          title="Ryan Dahl"
+          href="/feed"
+        />
         <script
           dangerouslySetInnerHTML={{
             __html: `
