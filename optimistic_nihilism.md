@@ -210,9 +210,5 @@ could outsmart me, then it would also understand all that I've outlined above
 about how fragile and rare life is. A super intelligence would, I think, be
 super empathetic.
 
-<br>
-<br>
-<br>
-<br>
 
 <a href="https://news.ycombinator.com/item?id=16749997">HN comments</a>

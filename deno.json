@@ -1,7 +1,30 @@
 {
   "tasks": {
-    "dev": "deno run --allow-net --allow-read --allow-env=NODE_DEBUG --watch --no-check main.js --dev",
-    "deploy-staging": "deployctl deploy --project=tinyclouds main.js"
+    "dev": "deno task lume -s",
+    "deploy-staging": "deployctl deploy --project=tinyclouds main.js",
+    "lume": "echo \"import 'lume/cli.ts'\" | deno run -A -",
+    "build": "deno task lume",
+    "serve": "deno task lume -s"
   },
-  "lock": false
+  "lock": false,
+  "imports": {
+    "lume/": "https://deno.land/x/lume@v3.0.5/",
+    "lume/jsx-runtime": "https://deno.land/x/ssx@v0.1.11/jsx-runtime.ts"
+  },
+  "compilerOptions": {
+    "types": [
+      "lume/types.ts"
+    ],
+    "jsx": "react-jsx",
+    "jsxImportSource": "lume"
+  },
+  "unstable": [
+    "temporal",
+    "fmt-component"
+  ],
+  "lint": {
+    "plugins": [
+      "https://deno.land/x/lume@v3.0.5/lint.ts"
+    ]
+  }
 }
