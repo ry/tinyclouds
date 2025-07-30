@@ -43,12 +43,13 @@ export default function Layout(
             }
 
             body {
-              font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+              font-family: "Times New Roman", Times, serif;
               line-height: 1.6;
               margin: 0;
               padding: 0;
               background: ${background || "#fff"};
               color: #333;
+              font-size: 18px;
             }
 
             body.dark {
@@ -57,9 +58,9 @@ export default function Layout(
             }
 
             .container {
-              max-width: 640px;
+              max-width: 680px;
               margin: 0 auto;
-              padding: 2rem 1rem;
+              padding: 3rem 2rem;
             }
 
             .header {
@@ -68,7 +69,6 @@ export default function Layout(
               margin-bottom: 4rem;
               position: relative;
             }
-
 
             .avatar {
               width: 80px;
@@ -118,7 +118,7 @@ export default function Layout(
             }
             
             .theme-toggle:hover, .back-button:hover {
-              background: #f5f;
+              background: #f8f8f8;
               color: #333;
               text-decoration: none;
             }
@@ -152,13 +152,10 @@ export default function Layout(
 
             @media (max-width: 640px) {
               .header {
-                flex-direction: column;
-                text-align: center;
                 gap: 1rem;
               }
               
               .avatar {
-                margin-right: 0;
                 width: 64px;
                 height: 64px;
               }
@@ -191,7 +188,6 @@ export default function Layout(
               font-size: 2.25rem;
             }
             
-            
             h2 { font-size: 1.875rem; }
             h3 { font-size: 1.5rem; }
 
@@ -218,7 +214,6 @@ export default function Layout(
               max-height: 350px;
             }
 
-
             .post-list {
               list-style: none;
               padding: 0;
@@ -235,9 +230,8 @@ export default function Layout(
               font-weight: 600;
             }
 
-
             .content p {
-              margin-bottom: 1rem;
+              margin-bottom: 1.5rem;
             }
 
             .content blockquote {
@@ -252,7 +246,7 @@ export default function Layout(
             }
 
             .content pre {
-              background-color: #f5f;
+              background-color: #f8f8f8;
               padding: 1.5rem;
               border-radius: 0.375rem;
               overflow-x: auto;
@@ -261,24 +255,27 @@ export default function Layout(
             }
 
             body.dark .content pre {
-              background-color: #222;
+              background-color: #1a1a1a;
             }
 
             .content code {
-              background-color: #f5f;
+              background-color: #f8f8f8;
               padding: 0.125rem 0.25rem;
               border-radius: 0.25rem;
               font-size: 0.875em;
             }
 
             body.dark .content code {
-              background-color: #222;
+              background-color: #1a1a1a;
             }
-
 
             @media (max-width: 640px) {
               .container {
-                padding: 1rem 0.75rem;
+                padding: 2rem 1.5rem;
+              }
+              
+              body {
+                font-size: 16px;
               }
               
               h1, .post-title { font-size: 1.875rem; }

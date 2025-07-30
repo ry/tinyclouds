@@ -1,6 +1,6 @@
 export const url = "/feed.xml";
 
-export default function() {
+export default function () {
   return `<!DOCTYPE html>
 <html>
 <head>

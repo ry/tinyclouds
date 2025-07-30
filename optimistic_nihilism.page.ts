@@ -1,6 +1,6 @@
 export const url = "/optimistic_nihilism";
 
-export default function() {
+export default function () {
   return `<!DOCTYPE html>
 <html>
 <head>
