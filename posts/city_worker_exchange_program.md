@@ -1,7 +1,6 @@
 ---
 title: City Worker Exchange Program
 publish_date: 2022-08-04
-layout: post.tsx
 ---
 
 An international exchange program should be established for workers in local

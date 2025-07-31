@@ -1,7 +1,6 @@
 ---
 title: Automatic Colorization
 publish_date: 2016-01-08
-layout: post.tsx
 ---
 
 Have you seen Reddit's

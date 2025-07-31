@@ -1,7 +1,6 @@
 ---
 title: I hate almost all software
 publish_date: 2011-09-29
-layout: post.tsx
 ---
 
 It's unnecessary and complicated at almost every layer. At best I can
