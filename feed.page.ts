@@ -1,14 +1,14 @@
 export const url = "/feed";
 
-export default function ({ search }: { search: any }) {
+export default function ({ search }: Lume.Data) {
   // Generate RSS content for /feed to match original tinyclouds.org
   const posts = search.pages()
-    .filter((page: any) => page.title && page.publish_date)
-    .sort((a: any, b: any) =>
+    .filter((page) => page.title && page.publish_date)
+    .sort((a, b) =>
       new Date(b.publish_date).getTime() - new Date(a.publish_date).getTime()
     );
 
-  const rssItems = posts.map((post: any) => {
+  const rssItems = posts.map((post) => {
     const url = `https://tinyclouds${post.url}`;
     const date = new Date(post.publish_date).toUTCString();
 

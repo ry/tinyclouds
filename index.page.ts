@@ -2,11 +2,11 @@ export const layout = "layout.tsx";
 export const title = "Ryan Dahl";
 export const url = "/";
 
-export default function* ({ search }: { search: any }) {
+export default function* ({ search }: Lume.Data) {
   const allPages = search.pages();
   const posts = allPages
-    .filter((page: any) => page.title && page.publish_date)
-    .sort((a: any, b: any) =>
+    .filter((page) => page.title && page.publish_date)
+    .sort((a, b) =>
       new Date(b.publish_date).getTime() - new Date(a.publish_date).getTime()
     );
 
@@ -27,7 +27,7 @@ export default function* ({ search }: { search: any }) {
     
     <ul class="post-list">
       ${
-    posts.map((post: any) => {
+    posts.map((post) => {
       const formattedDate =
         new Date(post.publish_date).toISOString().split("T")[0];
 
