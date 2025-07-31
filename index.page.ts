@@ -2,10 +2,10 @@ export const layout = "layout.tsx";
 export const title = "Ryan Dahl";
 export const url = "/";
 
-export default function* ({ search }: Lume.Data) {
+export default function ({ search }: Lume.Data) {
   const posts = search.pages("type=post publish_date!=undefined", "publish_date=desc");
 
-  const content = `
+  return `
     <div class="header">
       <img src="/ry.jpg" alt="Ryan Dahl" class="avatar">
       <div class="header-content">
@@ -39,11 +39,4 @@ export default function* ({ search }: Lume.Data) {
   }
     </ul>
   `;
-
-  yield {
-    url: "/",
-    title: "Ryan Dahl",
-    layout: "layout.tsx",
-    content: content,
-  };
 }
