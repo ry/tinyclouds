@@ -1,7 +1,6 @@
 ---
 title: We're Still Underestimating What AI Really Means
 publish_date: 2025-06-14
-layout: post.tsx
 ---
 
 Most people are focused on short-term gains. Another tech wave, another startup

@@ -1,16 +1,15 @@
 export const layout = "layout.tsx";
 export const title = "Ryan Dahl";
 
-export default function Home({ search }: { search: any }) {
-  const posts = search.pages("src.path*=/posts/")
-    .filter((page: any) => page.publish_date)
-    .sort((a: any, b: any) =>
-      new Date(b.publish_date).getTime() - new Date(a.publish_date).getTime()
-    );
+export default function Home({ search }: Lume.Data) {
+  const posts = search.pages(
+    "type=post publish_date!=undefined",
+    "publish_date=desc",
+  );
 
   return (
     <ul class="post-list">
-      {posts.map((post: any) => {
+      {posts.map((post) => {
         const formattedDate = new Intl.DateTimeFormat("en-US", {
           year: "numeric",
           month: "long",

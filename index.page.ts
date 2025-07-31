@@ -2,15 +2,13 @@ export const layout = "layout.tsx";
 export const title = "Ryan Dahl";
 export const url = "/";
 
-export default function* ({ search }: { search: any }) {
-  const allPages = search.pages();
-  const posts = allPages
-    .filter((page: any) => page.title && page.publish_date)
-    .sort((a: any, b: any) =>
-      new Date(b.publish_date).getTime() - new Date(a.publish_date).getTime()
-    );
+export default function ({ search }: Lume.Data) {
+  const posts = search.pages(
+    "type=post publish_date!=undefined",
+    "publish_date=desc",
+  );
 
-  const content = `
+  return `
     <div class="header">
       <img src="/ry.jpg" alt="Ryan Dahl" class="avatar">
       <div class="header-content">
@@ -27,16 +25,13 @@ export default function* ({ search }: { search: any }) {
     
     <ul class="post-list">
       ${
-    posts.map((post: any) => {
+    posts.map((post) => {
       const formattedDate =
         new Date(post.publish_date).toISOString().split("T")[0];
 
-      // Fix the URL to remove /posts/ prefix
-      const cleanUrl = post.url.replace("/posts/", "/");
-
       return `
           <li>
-            <h2><a href="${cleanUrl}">${post.title}</a></h2>
+            <h2><a href="${post.url}">${post.title}</a></h2>
             <div class="post-date">${formattedDate}</div>
           </li>
         `;
@@ -44,11 +39,4 @@ export default function* ({ search }: { search: any }) {
   }
     </ul>
   `;
-
-  yield {
-    url: "/",
-    title: "Ryan Dahl",
-    layout: "layout.tsx",
-    content: content,
-  };
 }
