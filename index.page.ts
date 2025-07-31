@@ -26,12 +26,9 @@ export default function ({ search }: Lume.Data) {
       const formattedDate =
         new Date(post.publish_date).toISOString().split("T")[0];
 
-      // Fix the URL to remove /posts/ prefix
-      const cleanUrl = post.url.replace("/posts/", "/");
-
       return `
           <li>
-            <h2><a href="${cleanUrl}">${post.title}</a></h2>
+            <h2><a href="${post.url}">${post.title}</a></h2>
             <div class="post-date">${formattedDate}</div>
           </li>
         `;
