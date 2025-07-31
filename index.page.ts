@@ -3,12 +3,7 @@ export const title = "Ryan Dahl";
 export const url = "/";
 
 export default function* ({ search }: Lume.Data) {
-  const allPages = search.pages();
-  const posts = allPages
-    .filter((page) => page.title && page.publish_date)
-    .sort((a, b) =>
-      new Date(b.publish_date).getTime() - new Date(a.publish_date).getTime()
-    );
+  const posts = search.pages("type=post publish_date!=undefined", "publish_date=desc");
 
   const content = `
     <div class="header">

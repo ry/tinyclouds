@@ -2,11 +2,7 @@ export const layout = "layout.tsx";
 export const title = "Ryan Dahl";
 
 export default function Home({ search }: Lume.Data) {
-  const posts = search.pages("src.path*=/posts/")
-    .filter((page) => page.publish_date)
-    .sort((a, b) =>
-      new Date(b.publish_date).getTime() - new Date(a.publish_date).getTime()
-    );
+  const posts = search.pages("type=post publish_date!=undefined", "publish_date=desc");
 
   return (
     <ul class="post-list">
