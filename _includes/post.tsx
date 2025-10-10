@@ -6,7 +6,7 @@ export default function Post(
     publish_date: Date;
     cover_html?: string;
     post_class?: string;
-    children: React.ReactNode;
+    children: unknown;
   },
 ) {
   const formattedDate = new Date(publish_date).toISOString().split("T")[0];

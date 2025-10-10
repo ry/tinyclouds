@@ -2,7 +2,7 @@ export default function Layout(
   { title, background, children }: {
     title?: string;
     background?: string;
-    children: React.ReactNode;
+    children: unknown;
   },
 ) {
   return (

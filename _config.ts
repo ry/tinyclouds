@@ -7,8 +7,7 @@ import mdx from "lume/plugins/mdx.ts";
 const site = lume({
   src: ".",
   dest: "_site",
-}, {
-  url: "https://tinyclouds.ry.deno.net",
+  location: new URL("https://tinyclouds.ry.deno.net"),
 });
 
 site.use(jsx());
