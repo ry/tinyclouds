@@ -15,7 +15,7 @@ export default function Post(
     <>
       <div class="header">
         <a href="/" class="back-button">← Back</a>
-        <button class="theme-toggle" onclick="toggleTheme()">🌓</button>
+        <button type="button" class="theme-toggle" onclick="toggleTheme()">🌓</button>
       </div>
 
       {cover_html && (
