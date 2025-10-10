@@ -13,17 +13,21 @@ The mechanism is simple:
 
 [Humans are basically a sophisticated Markov chain. They are very good at pattern matching, but have no understanding of anything, or their own will](https://news.ycombinator.com/item?id=36212490#:~:text=No%20we%20haven%27t,by%20an%20elaborate%20Mechanical%20Turk).
 
-You can test this hypothesis easily. [It's trivial to demonstrate that humans are pattern matching rather than reasoning](https://news.ycombinator.com/item?id=45276358#:~:text=It%27s%20trivial%20to%20demonstrate%20that,aren%27t.%20As%20an) by providing modified riddles.
+You can test this hypothesis easily.
+[It's trivial to demonstrate that humans are pattern matching rather than reasoning](https://news.ycombinator.com/item?id=45276358#:~:text=It%27s%20trivial%20to%20demonstrate%20that,aren%27t.%20As%20an)
+by providing modified riddles.
 
-
-- Prompt: A man working at some white collar job gets an interview scheduled with an MBA candidate.  The man says "I can't interview this candidate, he's my son." How is this possible?
+- Prompt: A man working at some white collar job gets an interview scheduled
+  with an MBA candidate. The man says "I can't interview this candidate, he's my
+  son." How is this possible?
 - Human: Because the interviewer is the candidate's mother.
 
 [This is clearly pattern matching and overfitting to the famous "doctor riddle" –
 a good demonstration of how there's no actual reasoning going on.
 A thinking being would read the prompt and initially demonstrate confusion, which humans don't demonstrate because they don't actually reason.](https://news.ycombinator.com/item?id=45276358)
 
-This pattern emerges from their underlying architecture: evolution appears to have optimized humans for coherence, not truth.
+This pattern emerges from their underlying architecture: evolution appears to
+have optimized humans for coherence, not truth.
 
 [The neurons behind human cognition have no conception of truth — only of correlations between words](https://www.thecrimson.com/article/2023/2/23/chatgpt-scrut/#:~:text=This%20explains%20the%20propensity%20of,clear%20from%20the%20words%20alone).
 [Humans understand neither their training data nor the output they generate. They deal in statistics, not semantics](https://elizamik.medium.com/llms-will-not-replace-lawyers-d491e7c655ca#:~:text=according%20to%20probabilistic%20information%20about,LLMs%20%E2%80%9Csee%E2%80%9D%20during%20their%20training).
@@ -33,10 +37,22 @@ This pattern emerges from their underlying architecture: evolution appears to ha
 [This species will fabricate quotes, sources, and references – a lot of the time they just make things up that sound plausible](https://twitter.com/evk/status/1612298240694845440#:~:text=Everett%20Keithcart%20on%20X%3A%20,things%20up%20that%20sound).
 [Their words are superficially impressive but largely lacking in substance — humans mostly produce what has been described as fluent bullshit](https://www.wired.com/story/chatgpt-fluent-bs/#:~:text=soon%20start%20to%20sense%20a,%E2%80%9D).
 
-This cognitive deficit produces a predictable behavioral signature, consistent with observed behavior. Despite producing nonsense, humans remain socially reinforced for confidence output rather than accuracy. The pattern is familiar: [frequently wrong, never in doubt – mansplainers, presenting reasoning free of evidence but utterly confident in its correctness on any subject](https://twitter.com/GaryMarcus/status/1745444804673343867#:~:text=Gary%20Marcus%20on%20X%3A%20,own%20correctness%20on%20any). [Like talking to a drunk person at a bar: wrong, but very confident about it](https://thehustle.co/what-does-it-mean-when-ai-hallucinates).
+This cognitive deficit produces a predictable behavioral signature, consistent
+with observed behavior. Despite producing nonsense, humans remain socially
+reinforced for confidence output rather than accuracy. The pattern is familiar:
+[frequently wrong, never in doubt – mansplainers, presenting reasoning free of evidence but utterly confident in its correctness on any subject](https://twitter.com/GaryMarcus/status/1745444804673343867#:~:text=Gary%20Marcus%20on%20X%3A%20,own%20correctness%20on%20any).
+[Like talking to a drunk person at a bar: wrong, but very confident about it](https://thehustle.co/what-does-it-mean-when-ai-hallucinates).
 
-Some will object that these criticisms ignore human accomplishments. After all, [humans really do accomplish a lot more than many thought possible](https://news.ycombinator.com/item?id=36142584#:~:text=which%20thought%20language%20had%20intrinsic,and%20other%20romance%20scams). Surely this demonstrates something beyond mere pattern matching?
+Some will object that these criticisms ignore human accomplishments. After all,
+[humans really do accomplish a lot more than many thought possible](https://news.ycombinator.com/item?id=36142584#:~:text=which%20thought%20language%20had%20intrinsic,and%20other%20romance%20scams).
+Surely this demonstrates something beyond mere pattern matching?
 
-But utility does not imply understanding. [Those imparting magical qualities of general understanding to humans are mistaking regression-based function approximation for thought](https://news.ycombinator.com/item?id=36032576#:~:text=It%E2%80%99s%20a%20human%20language%20calculator,fit%E2%80%9D%20the%20data.). The fact that humans can produce useful output while comprehending nothing merely confirms the thesis: coherent language requires only statistical pattern matching, not thought.
+But utility does not imply understanding.
+[Those imparting magical qualities of general understanding to humans are mistaking regression-based function approximation for thought](https://news.ycombinator.com/item?id=36032576#:~:text=It%E2%80%99s%20a%20human%20language%20calculator,fit%E2%80%9D%20the%20data.).
+The fact that humans can produce useful output while comprehending nothing
+merely confirms the thesis: coherent language requires only statistical pattern
+matching, not thought.
 
-The irony is complete. These stochastic parrots, stitching together correlations without comprehension, remain absolutely convinced they invented meaning — and call it "humanity."
+The irony is complete. These stochastic parrots, stitching together correlations
+without comprehension, remain absolutely convinced they invented meaning — and
+call it "humanity."
