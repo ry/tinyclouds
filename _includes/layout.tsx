@@ -269,6 +269,15 @@ export default function Layout(
               background-color: #1a1a1a;
             }
 
+            .content.hidden-links a {
+              color: inherit;
+            }
+
+            .content.hidden-links a:hover {
+              text-decoration: underline;
+              opacity: 0.7;
+            }
+
             @media (max-width: 640px) {
               .container {
                 padding: 2rem 1.5rem;

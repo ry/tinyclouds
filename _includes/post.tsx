@@ -1,10 +1,11 @@
 export const layout = "layout.tsx";
 
 export default function Post(
-  { title, publish_date, cover_html, children }: {
+  { title, publish_date, cover_html, post_class, children }: {
     title: string;
     publish_date: Date;
     cover_html?: string;
+    post_class?: string;
     children: React.ReactNode;
   },
 ) {
@@ -29,7 +30,7 @@ export default function Post(
         {formattedDate}
       </div>
 
-      <div class="content">
+      <div class={`content${post_class ? ` ${post_class}` : ""}`}>
         {children}
       </div>
     </>
