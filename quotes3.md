@@ -1,0 +1,8 @@
+- [“LLMs just spew words. It just so happens that human beings can decode them into something related, useful, and meaningful surprisingly often.”](https://news.ycombinator.com/item?id=45061706)
+- [“Spicy autocomplete is still spicy autocomplete.”](https://news.ycombinator.com/item?id=44208996)
+- [“The thing is ‘spicy’ or ‘glorified’ autocomplete are not actually bad labels; they are autocomplete machines that are very good up to the point of convincing people that they think.”](https://news.ycombinator.com/item?id=44213190)
+- [“It’s a human language calculator. You’re imparting magical qualities of general understanding to regression-based function approximation. They ‘fit’ the data.”](https://news.ycombinator.com/item?id=36032576)
+- [“LLM is just regurgitating stuff as a principle.”](https://news.ycombinator.com/item?id=41901696)
+- [“Those people—whether they can write an essay or not, whether they can use the word ‘consciousness’ or not—are still fundamentally alive because we share a grounded, lived, multi-sensory, social reality. And ChatGPT does not, not in the same way. Anything that it expresses now is only a mimicry of that.”](https://news.ycombinator.com/item?id=38286688)
+- [“LM avoids marginality and originality altogether by its design… If the problem was to design the most average programming language with no purpose, no market niche, and no technological context – then GPT-4 is clearly a winner.”](https://news.ycombinator.com/item?id=35178491)
+- [“LLMs develop no understanding of truth or lie. They just have a statistical model of what words go with what other words, and are plucking the next word based on that…”](https://news.ycombinator.com/item?id=34808829)

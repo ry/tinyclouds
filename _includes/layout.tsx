@@ -271,10 +271,11 @@ export default function Layout(
 
             .content.hidden-links a {
               color: inherit;
+              text-decoration: underline;
+              text-decoration-color: color-mix(in srgb, currentColor 20%, transparent);
             }
 
             .content.hidden-links a:hover {
-              text-decoration: underline;
               opacity: 0.7;
             }
 
