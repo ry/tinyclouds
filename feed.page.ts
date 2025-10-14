@@ -9,7 +9,7 @@ export default function ({ search }: { search: any }) {
     );
 
   const rssItems = posts.map((post: any) => {
-    const url = `https://tinyclouds${post.url}`;
+    const url = `https://tinyclouds.org${post.url}`;
     const date = new Date(post.publish_date).toUTCString();
 
     return `    <item>
