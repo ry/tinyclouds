@@ -19,22 +19,6 @@ export default function Layout(
           title="Ryan Dahl"
           href="/feed"
         />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-            function toggleTheme() {
-              document.body.classList.toggle('dark');
-              localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
-            }
-            
-            // Apply saved theme on load
-            if (localStorage.getItem('theme') === 'dark' || 
-                (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-              document.body.classList.add('dark');
-            }
-          `,
-          }}
-        />
         <style
           dangerouslySetInnerHTML={{
             __html: `
@@ -299,6 +283,22 @@ export default function Layout(
         <div class="container">
           {children}
         </div>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+            function toggleTheme() {
+              document.body.classList.toggle('dark');
+              localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
+            }
+
+            // Apply saved theme on load
+            if (localStorage.getItem('theme') === 'dark' || 
+                (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+              document.body.classList.add('dark');
+            }
+          `,
+          }}
+        />
       </body>
     </html>
   );
